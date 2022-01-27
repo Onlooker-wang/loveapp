@@ -190,8 +190,8 @@ public class DrawHeartActivity extends CommonAudioActivity {
         mClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"下次更新后再点我噢！",Toast.LENGTH_SHORT).show();
-                //startActivity(new Intent(DrawHeartActivity.this, PictureAnimActivity.class));
+                //Toast.makeText(getApplicationContext(),"下次更新后再点我噢！",Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(DrawHeartActivity.this, PictureAnimActivity.class));
             }
         });
     }
