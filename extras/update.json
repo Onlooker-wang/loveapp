@@ -1,5 +1,5 @@
 {
-  "url":"https://raw.githubusercontent.com/Onlooker-wang/loveapp/main/extras/love-app-release-v1.1.apk",
-  "versionCode":2,
-  "updateMessage":"1. 适配 Android 8.0\n2. 适配 Android 9.0\n3. 更新说明"
+  "url":"https://raw.githubusercontent.com/Onlooker-wang/loveapp/main/extras/love-app-release-v1.2.apk",
+  "versionCode":3,
+  "updateMessage":"1. 更新说明：\n2. 禁用首页跳转功能"
 }

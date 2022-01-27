@@ -190,7 +190,8 @@ public class DrawHeartActivity extends CommonAudioActivity {
         mClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DrawHeartActivity.this, PictureAnimActivity.class));
+                Toast.makeText(getApplicationContext(),"下次更新后再点我噢！",Toast.LENGTH_SHORT).show();
+                //startActivity(new Intent(DrawHeartActivity.this, PictureAnimActivity.class));
             }
         });
     }
@@ -235,11 +236,12 @@ public class DrawHeartActivity extends CommonAudioActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (isFastClick()) {
+        mHeartView.reDraw();
+        /*if (isFastClick()) {
             mHeartView.reDraw();
         } else {
             Toast.makeText(this, "心急吃不了热豆腐，请耐心等待爱心成型", Toast.LENGTH_SHORT).show();
-        }
+        }*/
         return super.onTouchEvent(event);
     }
 
