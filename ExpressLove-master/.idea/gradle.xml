@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/particletextview" />
             <option value="$PROJECT_DIR$/textlibrary" />
+            <option value="$PROJECT_DIR$/updatelibrary" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
