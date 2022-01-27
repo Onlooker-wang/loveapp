@@ -31,6 +31,7 @@ import com.example.particletextview.MovingStrategy.CornerStrategy;
 import com.example.particletextview.MovingStrategy.VerticalStrategy;
 import com.example.particletextview.Object.ParticleTextViewConfig;
 import com.example.particletextview.View.ParticleTextView;
+import com.example.updatelibrary.UpdateChecker;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -95,6 +96,9 @@ public class DrawHeartActivity extends CommonAudioActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_draw_heart);
+
+        //检查更新
+        UpdateChecker.checkForDialog(DrawHeartActivity.this);
 
         initView();
         initHeartView();
