@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.lenovo.expresslove.R;
 import com.example.lenovo.expresslove.base.CommonAudioActivity;
+import com.example.lenovo.expresslove.http.UpdateAppHttpUtil;
 import com.example.lenovo.expresslove.utils.CommonFlashAnimationHelper;
 import com.example.lenovo.expresslove.utils.TimeUtil;
 import com.example.lenovo.expresslove.utils.TypeTextView2;
@@ -32,6 +33,8 @@ import com.example.particletextview.MovingStrategy.VerticalStrategy;
 import com.example.particletextview.Object.ParticleTextViewConfig;
 import com.example.particletextview.View.ParticleTextView;
 import com.example.updatelibrary.UpdateChecker;
+import com.vector.update_app.UpdateAppManager;
+import com.vector.update_app.listener.ExceptionHandler;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -46,7 +49,7 @@ public class DrawHeartActivity extends CommonAudioActivity {
     private static final String LOVE1 = "Honey，我们在一起已经";
     private static final String LOVE2 = "小时啦！";
     private static final String LOVE3 = "这是我们相爱在一起的时光。Love you forever";
-
+    private String mUpdateUrl = "https://raw.githubusercontent.com/Onlooker-wang/loveapp/main/extras/update1.json";
 
     private WebView mWebViewTop, mWebViewBottom;
     private HeartView mHeartView;
@@ -98,8 +101,14 @@ public class DrawHeartActivity extends CommonAudioActivity {
         setContentView(R.layout.activity_draw_heart);
 
         //检查更新
-        UpdateChecker.checkForDialog(DrawHeartActivity.this);
+        /*new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                UpdateChecker.checkForDialog(DrawHeartActivity.this);
+            }
+        },1000);*/
 
+        updateApp();
         initView();
         initHeartView();
         initTime();
@@ -190,7 +199,7 @@ public class DrawHeartActivity extends CommonAudioActivity {
         mClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getApplicationContext(),"下次更新后再点我噢！",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "下次更新后再点我噢！", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(DrawHeartActivity.this, PictureAnimActivity.class));
             }
         });
@@ -348,6 +357,26 @@ public class DrawHeartActivity extends CommonAudioActivity {
             }
         };
         timer.schedule(taskcc, 1, 1500);  //<span style="color: rgb(85, 85, 85); font-family: 'microsoft yahei'; font-size: 15px; line-height: 35px;">第二个参数分别是delay（多长时间后执行），第三个参数是：duration（执行间隔）单位为：ms</span>
+    }
+
+
+    private void updateApp() {
+        new UpdateAppManager
+                .Builder()
+                //当前Activity
+                .setActivity(this)
+                //更新地址
+                .setUpdateUrl(mUpdateUrl)
+                .handleException(new ExceptionHandler() {
+                    @Override
+                    public void onException(Exception e) {
+                        e.printStackTrace();
+                    }
+                })
+                //实现httpManager接口的对象
+                .setHttpManager(new UpdateAppHttpUtil())
+                .build()
+                .update();
     }
 
 }

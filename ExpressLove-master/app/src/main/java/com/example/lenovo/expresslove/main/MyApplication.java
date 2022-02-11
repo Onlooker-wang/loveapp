@@ -4,7 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.lzy.okgo.OkGo;
 import com.tencent.smtt.sdk.QbSdk;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 public class MyApplication extends Application {
 
@@ -16,6 +18,13 @@ public class MyApplication extends Application {
         super.onCreate();
         mContext = getApplicationContext();
         initX5();
+        OkHttpUtils.getInstance()
+                .init(this)
+                .debug(true, "okHttp")
+                .timeout(20 * 1000);
+
+
+        OkGo.getInstance().init(this);
     }
 
     /**
