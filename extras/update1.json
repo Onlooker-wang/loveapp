@@ -1,9 +1,9 @@
 {
   "update": "Yes",
-  "new_version": "0.1.2",
+  "new_version": "0.1.1",
   "apk_file_url": "https://raw.githubusercontent.com/Onlooker-wang/loveapp/main/extras/app-release.apk",
   "update_log": "1，添加删除信用卡接口。\r\n2，添加vip认证。",
-  "target_size": "5M",
+  "target_size": "21M",
   "new_md5":"b97bea014531123f94c3ba7b7afbaad2",
   "constraint": false
 }
