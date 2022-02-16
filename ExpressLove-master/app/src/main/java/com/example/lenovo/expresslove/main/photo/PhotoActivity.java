@@ -24,6 +24,7 @@ package com.example.lenovo.expresslove.main.photo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -39,7 +40,10 @@ import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
 import com.example.lenovo.expresslove.R;
 import com.example.lenovo.expresslove.base.CommonAudioActivity;
+import com.example.lenovo.expresslove.main.FireworksActivity;
+import com.example.lenovo.expresslove.main.PictureAnimActivity;
 import com.example.lenovo.expresslove.utils.SharedPreferencesUtils;
+import com.example.lenovo.expresslove.utils.heart.HeartLayout;
 import com.example.lenovo.expresslove.zoom.DragPhotoActivity;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoImpl;
@@ -58,6 +62,12 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by wangya on 2022/2/16.
@@ -67,10 +77,11 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
     private TakePhoto mTakePhoto;
     private InvokeParam mInvokeParam;
     private Context mContext;
-
-
+    private Random mRandom = new Random();
+    private Random mRandom2 = new Random();
     private RecyclerView mRecyclerView;
     private PhotoAdapter mPhotoAdapter;
+    private HeartLayout mHeartLayout;//垂直方向的漂浮的红心
 
     private List<TImage> mSelectMedia = new ArrayList<>();
     private ArrayList<Uri> mUris = new ArrayList<>();
@@ -90,9 +101,15 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
         mPhotoAdapter.setSelectMax(10000);
         mRecyclerView.setAdapter(mPhotoAdapter);
 
+        initView();
         initImage();
     }
 
+
+    private void initView() {
+        mHeartLayout = (HeartLayout) findViewById(R.id.heart_o_red_layout);
+        showRedHeartLayout();
+    }
 
     private void initImage() {
         //SharedPreferencesUtils.deleteDataForSp(mContext);
@@ -111,6 +128,50 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
             showSaveImg(TUtils.getTImagesWithUris(mUris, TImage.FromType.OTHER));
         }
 
+    }
+
+    private void showRedHeartLayout() {
+        Observable.timer(400, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Long>() {
+                    public void onCompleted() {
+                        mHeartLayout.setVisibility(View.VISIBLE);
+                        mHeartLayout.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Log.i(TAG, "onClick: mHeartLayout");
+                                startActivity(new Intent(PhotoActivity.this, FireworksActivity.class));
+                            }
+                        });
+                        delayDo2();
+                    }
+
+                    public void onError(Throwable e) {
+                    }
+
+                    public void onNext(Long aLong) {
+                    }
+                });
+    }
+
+    private int randomColor() {
+        return Color.rgb(mRandom.nextInt(255), mRandom.nextInt(255), mRandom.nextInt(255));
+    }
+
+    private void delayDo2() {
+        Observable.timer((long) mRandom2.nextInt(200), TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Long>() {
+                    public void onCompleted() {
+                        mHeartLayout.addHeart(randomColor());
+                        delayDo2();
+                    }
+
+                    public void onError(Throwable e) {
+                    }
+
+                    public void onNext(Long aLong) {
+
+                    }
+                });
     }
 
     //加号的点击事件
