@@ -133,10 +133,10 @@ public class PictureAnimActivity extends CommonAudioActivity implements Animatio
         mWebView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
         mWebView.setVisibility(View.GONE);
 
-        mNewRadioGroup = findViewById(R.id.new_radio_group);
+        mNewRadioGroup = (NewRadioGroup) findViewById(R.id.new_radio_group);
 
-        mAnimView = findViewById(R.id.anim_view);
-        mAnimVertical = findViewById(R.id.anim_vertical);
+        mAnimView = (ImageView) findViewById(R.id.anim_view);
+        mAnimVertical = (ImageView) findViewById(R.id.anim_vertical);
         //scrollbars
 
         FrameLayout.LayoutParams fp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -541,7 +541,7 @@ public class PictureAnimActivity extends CommonAudioActivity implements Animatio
                                     }
                                 }).show();
 */
-                                startActivity(new Intent(PictureAnimActivity.this,FireworksActivity.class));
+                                startActivity(new Intent(PictureAnimActivity.this, FireworksActivity.class));
                             }
                         });
                         delayDo2();

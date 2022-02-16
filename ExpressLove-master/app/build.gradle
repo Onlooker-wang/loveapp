@@ -7,11 +7,15 @@ android {
         minSdkVersion 22
         targetSdkVersion 28
         versionCode 1
-        versionName "0.1.2"
+        versionName "0.1.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
         }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
     }
     buildTypes {
         release {
@@ -23,7 +27,22 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:appcompat-v7:25.0.0'
+    implementation 'com.android.support:recyclerview-v7:25.0.0'
+    implementation 'com.android.support:support-v4:25.3.0'
+    implementation 'com.android.support:design:25.3.0'
+    //glide图片加载
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    //Logger打印
+    implementation 'com.orhanobut:logger:1.15'
+    //recycelerView 适配器
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.14'
+    //仿iOS的AlertViewController
+    implementation 'com.bigkoo:alertview:1.0.3'
+    //图片选择
+    implementation 'com.jph.takephoto:takephoto_library:4.0.3'
+    //图片放大
+    implementation 'com.github.githubwing:DragPhotoView:1.0.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation project(path: ':textlibrary')
     implementation project(path: ':particletextview')

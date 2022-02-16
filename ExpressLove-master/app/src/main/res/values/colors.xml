@@ -35,5 +35,9 @@
     <color name="font_green">#00cccc</color>
 
     <color name="commom_background">#f3f3f3</color>
-
+    <!--选择图片颜色-->
+    <color name="multiple_image_select_primaryDark">#018AF1</color>
+    <color name="multiple_image_select_accent">#018AF1</color>
+    <color name="multiple_image_select_primary">#018AF1</color>
+    <color name="image_color">#f6f6f6</color>
 </resources>

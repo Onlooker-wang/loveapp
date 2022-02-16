@@ -62,11 +62,11 @@ public class MainActivity extends CommonAudioActivity {
     }
 
     private void initView() {
-        mWhiteSnowView = findViewById(R.id.whiteSnowView);
+        mWhiteSnowView = (SnowView) findViewById(R.id.whiteSnowView);
         //mWhiteSnowView.setVisibility(View.VISIBLE);
-        mTypeTextView = findViewById(R.id.love_sentence);
+        mTypeTextView = (TypeTextView2) findViewById(R.id.love_sentence);
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/myttf.ttf");
-        mTypeTextView.setTypeface(typeface,Typeface.ITALIC);
+        mTypeTextView.setTypeface(typeface, Typeface.ITALIC);
         mBlueSnowView = (FlowerView) findViewById(R.id.flowerview);
         mBlueSnowView.setWH(DeviceInfo.mScreenWidthForPortrait, DeviceInfo.mScreenHeightForPortrait, DeviceInfo.mDensity);
         mBlueSnowView.loadFlower();

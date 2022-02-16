@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.example.lenovo.expresslove.R;
 import com.example.lenovo.expresslove.base.CommonAudioActivity;
 import com.example.lenovo.expresslove.http.UpdateAppHttpUtil;
+import com.example.lenovo.expresslove.main.photo.PhotoActivity;
 import com.example.lenovo.expresslove.utils.CommonFlashAnimationHelper;
 import com.example.lenovo.expresslove.utils.TimeUtil;
 import com.example.lenovo.expresslove.utils.TypeTextView2;
@@ -133,9 +134,9 @@ public class DrawHeartActivity extends CommonAudioActivity {
         hoursTv = (TextView) findViewById(R.id.hours_tv);
         tv_text = (TextView) findViewById(R.id.myword);
         tv_text_1 = (TextView) findViewById(R.id.myword_1);
-        mWeLoveTime = findViewById(R.id.we_love_time);
-        mClick = findViewById(R.id.click_layout);
-        mPic = findViewById(R.id.pic);
+        mWeLoveTime = (RelativeLayout) findViewById(R.id.we_love_time);
+        mClick = (LinearLayout) findViewById(R.id.click_layout);
+        mPic = (ImageView) findViewById(R.id.pic);
         shark();
 
         IntentFilter filter = new IntentFilter();
@@ -171,7 +172,7 @@ public class DrawHeartActivity extends CommonAudioActivity {
 
 
     private void initHeartView() {
-        mHeartView = findViewById(R.id.surfaceView);
+        mHeartView = (HeartView) findViewById(R.id.surfaceView);
     }
 
     private void initTime() {
@@ -200,7 +201,7 @@ public class DrawHeartActivity extends CommonAudioActivity {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(getApplicationContext(), "下次更新后再点我噢！", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(DrawHeartActivity.this, PictureAnimActivity.class));
+                startActivity(new Intent(DrawHeartActivity.this, PhotoActivity.class));
             }
         });
     }

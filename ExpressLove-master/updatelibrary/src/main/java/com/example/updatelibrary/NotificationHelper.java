@@ -68,7 +68,7 @@ public class NotificationHelper extends ContextWrapper {
     }
 
     private NotificationCompat.Builder getNofity(String text) {
-        return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+        return new NotificationCompat.Builder(getApplicationContext())
                 .setTicker(getString(R.string.android_auto_update_notify_ticker))
                 .setContentTitle("应用更新")
                 .setContentText(text)
