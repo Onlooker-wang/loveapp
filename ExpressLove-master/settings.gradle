@@ -1,3 +1,4 @@
+include ':update-app'
 include ':updatelibrary'
 include ':particletextview'
 include ':textlibrary'

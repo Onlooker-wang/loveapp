@@ -2,9 +2,9 @@ package com.example.lenovo.expresslove.http;
 
 import android.support.annotation.NonNull;
 
+import com.byd.update_app.HttpManager;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Progress;
-import com.vector.update_app.HttpManager;
 
 import java.io.File;
 import java.util.Map;

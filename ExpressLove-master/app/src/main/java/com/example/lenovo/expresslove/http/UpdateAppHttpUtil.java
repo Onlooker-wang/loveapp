@@ -2,7 +2,7 @@ package com.example.lenovo.expresslove.http;
 
 import android.support.annotation.NonNull;
 
-import com.vector.update_app.HttpManager;
+import com.byd.update_app.HttpManager;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.FileCallBack;
 import com.zhy.http.okhttp.callback.StringCallback;

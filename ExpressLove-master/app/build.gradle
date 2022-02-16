@@ -47,7 +47,8 @@ dependencies {
     implementation project(path: ':textlibrary')
     implementation project(path: ':particletextview')
     implementation project(path: ':updatelibrary')
-    implementation 'com.qianwen:update-app:3.5.2'
+    implementation project(':update-app')
+    //implementation 'com.qianwen:update-app:3.5.2'
     implementation 'com.qianwen:okhttp-utils:3.8.0'
     implementation 'io.reactivex:rxjava:1.2.9'
     implementation 'com.tbruyelle.rxpermissions:rxpermissions:0.9.4@aar'

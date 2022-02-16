@@ -20,6 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.byd.update_app.UpdateAppManager;
+import com.byd.update_app.listener.ExceptionHandler;
 import com.example.lenovo.expresslove.R;
 import com.example.lenovo.expresslove.base.CommonAudioActivity;
 import com.example.lenovo.expresslove.http.UpdateAppHttpUtil;
@@ -34,8 +36,6 @@ import com.example.particletextview.MovingStrategy.VerticalStrategy;
 import com.example.particletextview.Object.ParticleTextViewConfig;
 import com.example.particletextview.View.ParticleTextView;
 import com.example.updatelibrary.UpdateChecker;
-import com.vector.update_app.UpdateAppManager;
-import com.vector.update_app.listener.ExceptionHandler;
 
 import java.util.Timer;
 import java.util.TimerTask;
