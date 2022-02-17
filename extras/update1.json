@@ -1,6 +1,6 @@
 {
   "update": "Yes",
-  "new_version": "0.1.6",
+  "new_version": "0.1.7",
   "apk_file_url": "https://raw.githubusercontent.com/Onlooker-wang/loveapp/main/extras/app-release.apk",
   "update_log": "1，修复查看大图时始终显示第一张图片的bug。\r\n2，修复查看大图时图像模糊的bug。\r\n3，更改烟花界面返回键的逻辑，可返回上一界面",
   "target_size": "22.2M",
