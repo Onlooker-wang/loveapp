@@ -1,5 +1,7 @@
 package com.byd.update_app.utils;
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,6 +16,8 @@ import java.security.NoSuchAlgorithmException;
  */
 
 public class Md5Util {
+    private static final String TAG = "Md5Util";
+
     public static String getFileMD5(File file) {
         if (!file.exists()) {
             return "";

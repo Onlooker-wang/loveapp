@@ -11,6 +11,7 @@ import android.content.ServiceConnection;
 import android.os.Binder;
 import android.os.IBinder;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 
@@ -39,6 +40,7 @@ public class DownloadService extends Service {
     private NotificationManager mNotificationManager;
     private DownloadBinder binder = new DownloadBinder();
     private NotificationCompat.Builder mBuilder;
+    private UpdateAppBean mUpdateApp;
     //    /**
 //     * 开启服务方法
 //     *
@@ -108,7 +110,7 @@ public class DownloadService extends Service {
         }
 
 
-        mBuilder = new NotificationCompat.Builder(this,CHANNEL_ID);
+        mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID);
         mBuilder.setContentTitle("开始下载")
                 .setContentText("正在连接服务器")
                 .setSmallIcon(R.mipmap.lib_update_app_update_icon)
@@ -125,7 +127,7 @@ public class DownloadService extends Service {
     private void startDownload(UpdateAppBean updateApp, final DownloadCallback callback) {
 
         mDismissNotificationProgress = updateApp.isDismissNotificationProgress();
-
+        mUpdateApp = updateApp;
         String apkUrl = updateApp.getApkFileUrl();
         if (TextUtils.isEmpty(apkUrl)) {
             String contentText = "新版本下载路径错误";
@@ -292,6 +294,19 @@ public class DownloadService extends Service {
 
         @Override
         public void onResponse(File file) {
+
+
+            Log.i(TAG, "onResponse: " + AppUpdateUtils.appIsDownloaded(mUpdateApp));
+
+            if (!AppUpdateUtils.appIsDownloaded(mUpdateApp)) {
+                File appFile = AppUpdateUtils.getAppFile(mUpdateApp);
+                if (appFile.exists() && appFile.isFile()) {
+                    appFile.delete();
+                }
+                Toast.makeText(DownloadService.this, "下载失败", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             if (mCallBack != null) {
                 if (!mCallBack.onFinish(file)) {
                     close();

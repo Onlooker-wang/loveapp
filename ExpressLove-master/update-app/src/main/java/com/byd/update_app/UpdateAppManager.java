@@ -65,7 +65,7 @@ public class UpdateAppManager {
         mTopPic = builder.getTopPic();
 
         mIgnoreDefParams = builder.isIgnoreDefParams();
-        if(!mIgnoreDefParams) {
+        if (!mIgnoreDefParams) {
             mAppKey = builder.getAppKey();
         }
         mTargetPath = builder.getTargetPath();
@@ -159,7 +159,7 @@ public class UpdateAppManager {
 
         if (TextUtils.isEmpty(mTargetPath)
 //                || !mTargetPath.startsWith(preSuffix)
-                ) {
+        ) {
             Log.e(TAG, "下载路径错误:" + mTargetPath);
             return true;
         }
@@ -230,7 +230,7 @@ public class UpdateAppManager {
 
         //拼接参数
         Map<String, String> params = new HashMap<String, String>();
-        if(!mIgnoreDefParams) {
+        if (!mIgnoreDefParams) {
             if (!TextUtils.isEmpty(mAppKey)) {
                 params.put("appKey", mAppKey);
             }
@@ -327,7 +327,7 @@ public class UpdateAppManager {
     private void processData(String result, @NonNull UpdateCallback callback) {
         try {
             mUpdateApp = callback.parseJson(result);
-            if (mUpdateApp.isUpdate()) {
+            if (mUpdateApp.isUpdate() && !AppUpdateUtils.getVersionName(mActivity).equals(mUpdateApp.getNewVersion())) {
                 callback.hasNewApp(mUpdateApp, this);
                 //假如是静默下载，可能需要判断，
                 //是否wifi,
@@ -335,6 +335,7 @@ public class UpdateAppManager {
                 //没有则进行下载，监听下载完成，弹出安装对话框
 
             } else {
+                Toast.makeText(getContext(), "当前已是最新版本", Toast.LENGTH_SHORT).show();
                 callback.noNewApp("没有新版本");
             }
         } catch (Exception ignored) {
@@ -527,7 +528,8 @@ public class UpdateAppManager {
         }
 
         /**
-         *  设置默认的UpdateDialogFragment监听器
+         * 设置默认的UpdateDialogFragment监听器
+         *
          * @param updateDialogFragmentListener updateDialogFragmentListener 更新对话框关闭监听
          * @return Builder
          */
@@ -572,7 +574,6 @@ public class UpdateAppManager {
 
         /**
          * 是否隐藏对话框下载进度条
-         *
          *
          * @return Builder
          */

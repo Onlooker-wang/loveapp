@@ -1,6 +1,7 @@
 package com.byd.update_app;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.Serializable;
 
@@ -8,6 +9,7 @@ import java.io.Serializable;
  * 版本信息
  */
 public class UpdateAppBean implements Serializable {
+    private static final String TAG = "UpdateAppBean";
     private static final long serialVersionUID = 1L;
 
     /**
@@ -142,6 +144,7 @@ public class UpdateAppBean implements Serializable {
     }
 
     public String getNewMd5() {
+        Log.i(TAG, "getNewMd5: " + new_md5);
         return new_md5;
     }
 
