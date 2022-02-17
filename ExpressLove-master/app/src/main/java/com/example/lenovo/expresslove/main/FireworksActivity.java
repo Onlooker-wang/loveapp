@@ -55,7 +55,7 @@ public class FireworksActivity extends CommonAudioActivity {
 
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            new CommomDialog(getAssets(), this, R.style.dialog, getString(R.string.love21), new CommomDialog.OnCloseListener() {
+            /*new CommomDialog(getAssets(), this, R.style.dialog, getString(R.string.love21), new CommomDialog.OnCloseListener() {
                 @Override
                 public void onClick(Dialog dialog, boolean confirm) {
                     if (confirm) {
@@ -64,8 +64,8 @@ public class FireworksActivity extends CommonAudioActivity {
                     }
 
                 }
-            }).show();
-
+            }).show();*/
+            finish();
         }
         return true;
     }

@@ -47,6 +47,7 @@ dependencies {
     implementation project(path: ':textlibrary')
     implementation project(path: ':particletextview')
     implementation project(path: ':updatelibrary')
+    //implementation project(path: ':imageViewer')
     implementation project(':update-app')
     //implementation 'com.qianwen:update-app:3.5.2'
     implementation 'com.qianwen:okhttp-utils:3.8.0'

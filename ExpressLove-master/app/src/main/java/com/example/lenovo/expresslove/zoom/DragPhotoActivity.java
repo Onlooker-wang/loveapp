@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -22,9 +23,11 @@ import com.wingsofts.dragphotoview.DragPhotoView;
 import java.util.List;
 
 public class DragPhotoActivity extends AppCompatActivity {
+    private static final String TAG = "DragPhotoActivity";
     private ViewPager mViewPager;
     private List<TImage> mList;
     private DragPhotoView[] mPhotoViews;
+    private int mPosition;
 
     private int mOriginLeft, mOriginTop, mOriginHeight, mOriginWidth, mOriginCenterX, mOriginCenterY;
 
@@ -42,11 +45,13 @@ public class DragPhotoActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
 
         mList = (List<TImage>) getIntent().getSerializableExtra("path");
-
+        mPosition = getIntent().getIntExtra("position", 0);
+        Log.i(TAG, "onCreate position: " + mPosition);
         mPhotoViews = new DragPhotoView[mList.size()];
 
         for (int i = 0; i < mPhotoViews.length; i++) {
             mPhotoViews[i] = (DragPhotoView) View.inflate(this, R.layout.activity_photo_viewpager, null);
+            Log.i(TAG, "onCreate getCompressPath: " + mList.get(i).getCompressPath());
             Glide.with(this)
                     .load(mList.get(i).getCompressPath())
                     .crossFade()
@@ -199,7 +204,7 @@ public class DragPhotoActivity extends AppCompatActivity {
 
     private void finishWithAnimation() {
 
-        final DragPhotoView photoView = mPhotoViews[0];
+        final DragPhotoView photoView = mPhotoViews[mPosition];
         ValueAnimator translateXAnimator = ValueAnimator.ofFloat(0, mTranslationX);
         translateXAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -266,7 +271,7 @@ public class DragPhotoActivity extends AppCompatActivity {
     }
 
     private void performEnterAnimation() {
-        final DragPhotoView photoView = mPhotoViews[0];
+        final DragPhotoView photoView = mPhotoViews[mPosition];
         ValueAnimator translateXAnimator = ValueAnimator.ofFloat(photoView.getX(), 0);
         translateXAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override

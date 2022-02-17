@@ -24,6 +24,7 @@ package com.example.lenovo.expresslove.main.photo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -221,12 +222,21 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
     private PhotoAdapter.onPicClickListener onPicClickListener = new PhotoAdapter.onPicClickListener() {
         @Override
         public void onPicClick(View view, int position) {
-            startPhotoActivity(PhotoActivity.this, (ImageView) view);
+            //startPhotoActivity(PhotoActivity.this, (ImageView) view, position);
+            // data 可以多张图片List或单张图片，支持的类型可以是{@link Uri}, {@code url}, {@code path},{@link File}, {@link DrawableRes resId}…等
+            /*ImageViewer.load(mSelectMedia)//要加载的图片数据，单张或多张
+                    .selection(position)//当前选中位置
+                    .indicator(true)//是否显示指示器，默认不显示
+                    .imageLoader(new GlideImageLoader())//加载器，*必须配置，目前内置的有GlideImageLoader或PicassoImageLoader，也可以自己实现
+//                      .imageLoader(new PicassoImageLoader())
+                    .theme(R.style.ImageViewerTheme)//设置主题风格，默认：R.style.ImageViewerTheme
+                    .orientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)//设置屏幕方向,默认：ActivityInfo.SCREEN_ORIENTATION_BEHIND
+                    .start(PhotoActivity.this,view);*/
         }
     };
 
     //图片点击所做的操作
-    public void startPhotoActivity(Context context, ImageView imageView) {
+    public void startPhotoActivity(Context context, ImageView imageView, int position) {
         Intent intent = new Intent(context, DragPhotoActivity.class);
         int location[] = new int[2];
         imageView.getLocationOnScreen(location);
@@ -234,7 +244,7 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
         intent.putExtra("top", location[1]);
         intent.putExtra("height", imageView.getHeight());
         intent.putExtra("width", imageView.getWidth());
-
+        intent.putExtra("position", position);
         intent.putExtra("path", (Serializable) mSelectMedia);
         context.startActivity(intent);
         overridePendingTransition(0, 0);
@@ -327,7 +337,6 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
 
     /**
      * 获取TakePhoto实例
-     * 没有继承TakePhotoActivity 所写
      */
     public TakePhoto getTakePhoto() {
         if (mTakePhoto == null) {
