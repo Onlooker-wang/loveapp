@@ -10,11 +10,12 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Binder;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 import com.byd.update_app.HttpManager;
 import com.byd.update_app.R;
@@ -107,7 +108,7 @@ public class DownloadService extends Service {
         }
 
 
-        mBuilder = new NotificationCompat.Builder(this);
+        mBuilder = new NotificationCompat.Builder(this,CHANNEL_ID);
         mBuilder.setContentTitle("开始下载")
                 .setContentText("正在连接服务器")
                 .setSmallIcon(R.mipmap.lib_update_app_update_icon)

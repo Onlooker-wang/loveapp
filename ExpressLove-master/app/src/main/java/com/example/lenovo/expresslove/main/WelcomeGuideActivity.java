@@ -3,8 +3,6 @@ package com.example.lenovo.expresslove.main;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,6 +10,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.lenovo.expresslove.R;
 import com.example.lenovo.expresslove.adapter.GuideViewPagerAdapter;
@@ -69,7 +69,7 @@ public class WelcomeGuideActivity extends CommonAudioActivity implements OnClick
 		// 初始化adapter
 		adapter = new GuideViewPagerAdapter(views);
 		vp.setAdapter(adapter);
-		vp.setOnPageChangeListener(new PageChangeListener());
+		vp.setOnPageChangeListener((ViewPager.OnPageChangeListener) new PageChangeListener());
 
 		initDots();
 		
@@ -163,7 +163,7 @@ public class WelcomeGuideActivity extends CommonAudioActivity implements OnClick
 		finish();
 	}
 
-	private class PageChangeListener implements OnPageChangeListener {
+	private class PageChangeListener implements ViewPager.OnPageChangeListener {
 		// 当滑动状态改变时调用
 		@Override
 		public void onPageScrollStateChanged(int position) {

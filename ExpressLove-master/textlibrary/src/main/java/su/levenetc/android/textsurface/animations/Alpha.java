@@ -2,7 +2,8 @@ package su.levenetc.android.textsurface.animations;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import su.levenetc.android.textsurface.utils.AnimatorEndListener;
 import su.levenetc.android.textsurface.Text;

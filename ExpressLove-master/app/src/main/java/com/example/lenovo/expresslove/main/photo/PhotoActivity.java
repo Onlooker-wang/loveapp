@@ -29,20 +29,21 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
+import com.byd.imageviewer.ImageViewer;
+import com.byd.imageviewer.loader.GlideImageLoader;
 import com.example.lenovo.expresslove.R;
 import com.example.lenovo.expresslove.base.CommonAudioActivity;
 import com.example.lenovo.expresslove.main.FireworksActivity;
-import com.example.lenovo.expresslove.main.PictureAnimActivity;
 import com.example.lenovo.expresslove.utils.SharedPreferencesUtils;
 import com.example.lenovo.expresslove.utils.heart.HeartLayout;
 import com.example.lenovo.expresslove.zoom.DragPhotoActivity;
@@ -62,6 +63,7 @@ import com.jph.takephoto.uitl.TUtils;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -87,7 +89,8 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
     private List<TImage> mSelectMedia = new ArrayList<>();
     private ArrayList<Uri> mUris = new ArrayList<>();
     private ArrayList<String> mPathList = new ArrayList<>();
-    private String[] mImagePathFromSp;
+    private String[] mImagePathFromSp, mOriginPathFromSp;
+    private ArrayList<String> mOriginPathList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +101,7 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
         //设置RecyclerView
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
-        mPhotoAdapter = new PhotoAdapter(mContext, onAddPicListener, onPicClickListener);
+        mPhotoAdapter = new PhotoAdapter(mContext, mOnAddPicListener, onPicClickListener);
         mPhotoAdapter.setSelectMax(10000);
         mRecyclerView.setAdapter(mPhotoAdapter);
 
@@ -115,7 +118,9 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
     private void initImage() {
         //SharedPreferencesUtils.deleteDataForSp(mContext);
         mImagePathFromSp = SharedPreferencesUtils.getSharedPreferences(mContext, "ImagePath");
-        Log.i(TAG, "initImage mImagePathFromSp: " + mImagePathFromSp);
+        mOriginPathFromSp = SharedPreferencesUtils.getSharedPreferences(mContext, "OriginPath");
+        Log.i(TAG, "initImage mImagePathFromSp: " + Arrays.toString(mImagePathFromSp)
+                + ",mOriginPathFromSp: " + Arrays.toString(mOriginPathFromSp));
         if (mImagePathFromSp != null) {
             for (String path : mImagePathFromSp) {
                 Log.i(TAG, "onResume imagePath: " + path);
@@ -127,6 +132,15 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
             }
             Log.i(TAG, "initImage mUris: " + mUris + ",mPathList: " + mPathList);
             showSaveImg(TUtils.getTImagesWithUris(mUris, TImage.FromType.OTHER));
+        }
+
+        if (mOriginPathFromSp != null) {
+            for (String originPath : mOriginPathFromSp) {
+                Log.i(TAG, "onResume originPath: " + originPath);
+                if (!originPath.equals("")) {
+                    mOriginPathList.add(originPath);
+                }
+            }
         }
 
     }
@@ -176,7 +190,7 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
     }
 
     //加号的点击事件
-    private PhotoAdapter.onAddPicListener onAddPicListener = new PhotoAdapter.onAddPicListener() {
+    private PhotoAdapter.onAddPicListener mOnAddPicListener = new PhotoAdapter.onAddPicListener() {
         @Override
         public void onAddPicClick(int type, int position) {
             switch (type) {
@@ -224,14 +238,14 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
         public void onPicClick(View view, int position) {
             //startPhotoActivity(PhotoActivity.this, (ImageView) view, position);
             // data 可以多张图片List或单张图片，支持的类型可以是{@link Uri}, {@code url}, {@code path},{@link File}, {@link DrawableRes resId}…等
-            /*ImageViewer.load(mSelectMedia)//要加载的图片数据，单张或多张
+            ImageViewer.load(mOriginPathList)//要加载的图片数据，单张或多张
                     .selection(position)//当前选中位置
                     .indicator(true)//是否显示指示器，默认不显示
                     .imageLoader(new GlideImageLoader())//加载器，*必须配置，目前内置的有GlideImageLoader或PicassoImageLoader，也可以自己实现
 //                      .imageLoader(new PicassoImageLoader())
                     .theme(R.style.ImageViewerTheme)//设置主题风格，默认：R.style.ImageViewerTheme
                     .orientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)//设置屏幕方向,默认：ActivityInfo.SCREEN_ORIENTATION_BEHIND
-                    .start(PhotoActivity.this,view);*/
+                    .start(PhotoActivity.this, view);
         }
     };
 
@@ -266,14 +280,21 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
     //图片成功后返回执行的方法
     private void showImg(ArrayList<TImage> images) {
         for (int i = 0; i < images.size(); i++) {
-            Log.i(TAG, "showImg getCompressPath: " + images.get(i).getCompressPath());
+            Log.i(TAG, "showImg getCompressPath: " + images.get(i).getCompressPath()
+                    + ",getOriginPath: " + images.get(i).getOriginalPath());
             if (images.get(i).getCompressPath() != null) {
                 mSelectMedia.add(images.get(i));
                 mPathList.add(images.get(i).getCompressPath());
             }
+            if (images.get(i).getOriginalPath() != null) {
+                mOriginPathList.add(images.get(i).getOriginalPath());
+            }
         }
         String[] path = (String[]) mPathList.toArray(new String[0]);
         SharedPreferencesUtils.setSharedPreferences(mContext, "ImagePath", path);
+
+        String[] originPath = (String[]) mOriginPathList.toArray(new String[0]);
+        SharedPreferencesUtils.setSharedPreferences(mContext, "OriginPath", originPath);
 
         if (mSelectMedia != null) {
             mPhotoAdapter.setList(mSelectMedia);
@@ -308,7 +329,7 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
     private void configCompress(TakePhoto takePhoto) {
         CompressConfig config;
         config = new CompressConfig.Builder()
-                .setMaxSize(102400)
+                .setMaxSize(1024)
                 .setMaxPixel(800)
                 .enableReserveRaw(true)
                 .create();

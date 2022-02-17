@@ -1,7 +1,6 @@
 package com.example.lenovo.expresslove.utils;
 
 
-import android.support.annotation.FloatRange;
 import android.text.format.Time;
 
 import java.text.ParseException;

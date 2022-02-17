@@ -4,16 +4,17 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.lenovo.expresslove.R;
@@ -49,7 +50,7 @@ public class DragPhotoActivity extends AppCompatActivity {
         Log.i(TAG, "onCreate position: " + mPosition);
         mPhotoViews = new DragPhotoView[mList.size()];
 
-        for (int i = 0; i < mPhotoViews.length; i++) {
+        /*for (int i = 0; i < mPhotoViews.length; i++) {
             mPhotoViews[i] = (DragPhotoView) View.inflate(this, R.layout.activity_photo_viewpager, null);
             Log.i(TAG, "onCreate getCompressPath: " + mList.get(i).getCompressPath());
             Glide.with(this)
@@ -135,7 +136,7 @@ public class DragPhotoActivity extends AppCompatActivity {
                             mPhotoViews[i].setMinScale(mScaleX);
                         }
                     }
-                });
+                });*/
     }
 
     /**
@@ -145,7 +146,7 @@ public class DragPhotoActivity extends AppCompatActivity {
      * <p>
      * Code  under is shared transitions in all android versions implementation
      */
-    private void performExitAnimation(final DragPhotoView view, float x, float y, float w, float h) {
+    /*private void performExitAnimation(final DragPhotoView view, float x, float y, float w, float h) {
         view.finishAnimationCallBack();
         float viewX = mTargetWidth / 2 + x - mTargetWidth * mScaleX / 2;
         float viewY = mTargetHeight / 2 + y - mTargetHeight * mScaleY / 2;
@@ -311,10 +312,10 @@ public class DragPhotoActivity extends AppCompatActivity {
         });
         scaleXAnimator.setDuration(300);
         scaleXAnimator.start();
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
-        finishWithAnimation();
+        //finishWithAnimation();
     }
 }

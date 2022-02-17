@@ -2,10 +2,11 @@ package com.example.lenovo.expresslove.base;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lenovo.expresslove.main.MyApplication;
 import com.example.lenovo.expresslove.utils.PlayAudioUtil;

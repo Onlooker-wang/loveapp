@@ -1,10 +1,11 @@
 package com.example.lenovo.expresslove.sample;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lenovo.expresslove.R;
 import com.example.lenovo.expresslove.utils.textstyle.AlignSample;

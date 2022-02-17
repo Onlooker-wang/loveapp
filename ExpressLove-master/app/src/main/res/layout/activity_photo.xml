@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,16 +19,17 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="600dp"
-        android:layout_marginTop="55dp" />
+        android:layout_marginTop="55dp"
+        android:paddingStart="20dp" />
 
     <com.example.lenovo.expresslove.utils.heart.HeartLayout
         android:id="@+id/heart_o_red_layout"
         android:layout_width="100dp"
-        android:layout_height="500dp"
+        android:layout_height="250dp"
         android:layout_gravity="bottom|right"
         android:layout_marginBottom="50dp"
         android:background="@android:color/transparent"

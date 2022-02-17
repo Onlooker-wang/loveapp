@@ -1,6 +1,7 @@
 package com.byd.update_app;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import java.io.File;
 import java.io.Serializable;

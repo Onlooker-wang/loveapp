@@ -1,6 +1,7 @@
 package com.example.lenovo.expresslove.http;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.byd.update_app.HttpManager;
 import com.lzy.okgo.OkGo;
