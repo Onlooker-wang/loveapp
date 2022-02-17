@@ -4,6 +4,6 @@
   "apk_file_url": "https://raw.githubusercontent.com/Onlooker-wang/loveapp/main/extras/app-release.apk",
   "update_log": "1，修复查看大图时始终显示第一张图片的bug。\r\n2，修复查看大图时图像模糊的bug。\r\n3，更改烟花界面返回键的逻辑，可返回上一界面",
   "target_size": "22.2M",
-  "new_md5":"b97bea014531123f94c3ba7b7afbaad2",
+  "new_md5":"F1AF01DAC8212FDDB752E24191663595",
   "constraint": false
 }
