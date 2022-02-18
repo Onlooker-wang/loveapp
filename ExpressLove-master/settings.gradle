@@ -1,6 +1,0 @@
-include ':imageViewer'
-include ':update-app'
-include ':updatelibrary'
-include ':particletextview'
-include ':textlibrary'
-include ':app'

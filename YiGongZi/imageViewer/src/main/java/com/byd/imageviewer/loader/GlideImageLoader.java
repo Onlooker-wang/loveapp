@@ -1,0 +1,27 @@
+package com.byd.imageviewer.loader;
+
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
+
+import androidx.annotation.Nullable;
+
+import com.bumptech.glide.Glide;
+import com.byd.imageviewer.ImageDataSource;
+
+/**
+ * 当使用{@link GlideImageLoader}时，必须依赖{@link Glide}库。
+ * 为了保证{@link ImageViewer}体积最小化，和用户更多可能的选择性，并未将{@link Glide}打包进aar。
+ *
+ * @author <a href="mailto:jenly1314@gmail.com">Jenly</a>
+ */
+public class GlideImageLoader implements ImageLoader {
+    @Override
+    public void loadImage(Context context, ImageView imageView, Object data, @Nullable Drawable placeholderDrawable, @Nullable Drawable errorDrawable) {
+        if(data instanceof ImageDataSource){
+            Glide.with(context).load(((ImageDataSource) data).getDataSource()).placeholder(placeholderDrawable).error(errorDrawable).into(imageView);
+        }else{
+            Glide.with(context).load(data).placeholder(placeholderDrawable).error(errorDrawable).into(imageView);
+        }
+    }
+}

@@ -1,5 +1,9 @@
 {
-  "url":"https://raw.githubusercontent.com/Onlooker-wang/loveapp/main/extras/love-app-release-v1.3.apk",
-  "versionCode":4,
-  "updateMessage":"1. 更新说明：\n2. 启用首页跳转功能"
+  "update": "Yes",
+  "new_version": "0.1.9",
+  "apk_file_url": "https://raw.githubusercontent.com/Onlooker-wang/loveapp/main/extras/app-release.apk",
+  "update_log": "1，新增欢迎页。\r\n2，欢迎页面的图片从上传的照片中随机获取。",
+  "target_size": "23M",
+  "new_md5":"0A004AF1265C56E7ED9A4330F05F372B",
+  "constraint": false
 }
