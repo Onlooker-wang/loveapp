@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.lenovo.expresslove">
+    package="com.wy.lpr.expresslove">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
-        android:name=".main.MyApplication"
+        android:name="com.wy.lpr.expresslove.main.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/blue_ocean"
         android:label="@string/app_name"
@@ -26,7 +26,7 @@
             android:name="UPDATE_APP_KEY"
             android:value="ab55ce55Ac4bcP408cPb8c1Aaeac179c5f6f" />
 
-        <activity android:name=".main.DrawHeartActivity">
+        <activity android:name="com.wy.lpr.expresslove.main.DrawHeartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,14 +34,14 @@
             </intent-filter>
         </activity>
         <!--<activity android:name=".main.DrawHeartActivity" />-->
-        <activity android:name=".main.MainActivity" />
-        <activity android:name=".main.WelcomeGuideActivity" />
-        <activity android:name=".main.FireworksActivity" />
-        <activity android:name=".sample.TextSampleActivity" />
-        <activity android:name=".main.PictureAnimActivity" />
-        <activity android:name=".main.photo.PhotoActivity" />
+        <activity android:name="com.wy.lpr.expresslove.main.MainActivity" />
+        <activity android:name="com.wy.lpr.expresslove.main.WelcomeGuideActivity" />
+        <activity android:name="com.wy.lpr.expresslove.main.FireworksActivity" />
+        <activity android:name="com.wy.lpr.expresslove.sample.TextSampleActivity" />
+        <activity android:name="com.wy.lpr.expresslove.main.PictureAnimActivity" />
+        <activity android:name="com.wy.lpr.expresslove.main.photo.PhotoActivity" />
         <activity
-            android:name=".zoom.DragPhotoActivity"
+            android:name="com.wy.lpr.expresslove.zoom.DragPhotoActivity"
             android:theme="@style/translucent" />
 
     </application>

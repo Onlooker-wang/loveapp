@@ -20,7 +20,7 @@
          android:id="@+id/webView2"
          android:layout_width="match_parent"
          android:layout_height="match_parent"/>-->
-    <com.example.lenovo.expresslove.utils.heartview.HeartView
+    <com.wy.lpr.expresslove.utils.heartview.HeartView
         android:id="@+id/surfaceView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
         android:layout_height="200dp"
         android:layout_alignParentBottom="true" />
 
-    <com.example.lenovo.expresslove.utils.TypeTextView2
+    <com.wy.lpr.expresslove.utils.TypeTextView2
         android:id="@+id/typeTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

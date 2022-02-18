@@ -13,22 +13,22 @@
 
     </WebView>
 
-    <com.example.particletextview.View.ParticleTextView
+    <com.wy.particletextview.View.ParticleTextView
         android:id="@+id/particleTextView1"
         android:layout_width="match_parent"
         android:layout_height="100dp" />
 
-    <com.example.particletextview.View.ParticleTextView
+    <com.wy.particletextview.View.ParticleTextView
         android:id="@+id/particleTextView2"
         android:layout_width="match_parent"
         android:layout_height="100dp" />
 
-    <com.example.particletextview.View.ParticleTextView
+    <com.wy.particletextview.View.ParticleTextView
         android:id="@+id/particleTextView3"
         android:layout_width="match_parent"
         android:layout_height="100dp" />
 
-    <com.example.particletextview.View.ParticleTextView
+    <com.wy.particletextview.View.ParticleTextView
         android:id="@+id/particleTextView4"
         android:layout_width="match_parent"
         android:layout_height="100dp" />

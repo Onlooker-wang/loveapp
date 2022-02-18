@@ -26,7 +26,7 @@
         android:textColor="@color/pink"
         android:textSize="16sp"
         android:visibility="gone"/>
-    <com.example.lenovo.expresslove.utils.TypeTextView2
+    <com.wy.lpr.expresslove.utils.TypeTextView2
         android:id="@+id/dialog_sentence"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

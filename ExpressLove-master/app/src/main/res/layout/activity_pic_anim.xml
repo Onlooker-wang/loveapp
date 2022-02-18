@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
-        <com.example.lenovo.expresslove.utils.TypeTextView2
+        <com.wy.lpr.expresslove.utils.TypeTextView2
             android:id="@+id/typeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.example.lenovo.expresslove.utils.NewRadioGroup
+        <com.wy.lpr.expresslove.utils.NewRadioGroup
             android:id="@+id/new_radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
                 android:textSize="24sp" />
 
 
-        </com.example.lenovo.expresslove.utils.NewRadioGroup>
+        </com.wy.lpr.expresslove.utils.NewRadioGroup>
 
     </LinearLayout>
 
@@ -148,13 +148,13 @@
         android:visibility="gone" />
 
 
-    <com.example.lenovo.expresslove.utils.bluesnow.FlowerView
+    <com.wy.lpr.expresslove.utils.bluesnow.FlowerView
         android:id="@+id/flowerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-    <com.example.lenovo.expresslove.utils.whitesnow.SnowView
+    <com.wy.lpr.expresslove.utils.whitesnow.SnowView
         android:id="@+id/whiteSnowView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -168,7 +168,7 @@
         android:layout_gravity="center"
         android:visibility="gone" />
 
-    <com.example.lenovo.expresslove.utils.heart.HeartLayout
+    <com.wy.lpr.expresslove.utils.heart.HeartLayout
         android:id="@+id/heart_o_red_layout"
         android:layout_width="100dp"
         android:layout_height="500dp"

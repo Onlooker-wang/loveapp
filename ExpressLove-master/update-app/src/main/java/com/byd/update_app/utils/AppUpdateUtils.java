@@ -73,6 +73,8 @@ public class AppUpdateUtils {
         //文件存在
         //md5只一样
         File appFile = getAppFile(updateAppBean);
+        Log.i("md5", "appIsDownloaded: 1:" + Md5Util.getFileMD5(appFile)
+        + ",2: " + updateAppBean.getNewMd5());
         return !TextUtils.isEmpty(updateAppBean.getNewMd5())
                 && appFile.exists()
                 && Md5Util.getFileMD5(appFile).equalsIgnoreCase(updateAppBean.getNewMd5());
