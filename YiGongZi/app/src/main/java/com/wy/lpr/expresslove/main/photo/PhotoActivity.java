@@ -31,7 +31,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -46,6 +49,8 @@ import com.wy.lpr.expresslove.base.CommonAudioActivity;
 import com.wy.lpr.expresslove.main.FireworksActivity;
 import com.wy.lpr.expresslove.utils.SharedPreferencesUtils;
 import com.wy.lpr.expresslove.utils.heart.HeartLayout;
+import com.wy.lpr.expresslove.utils.popwindow.MenuPopWindow;
+import com.wy.lpr.expresslove.utils.popwindow.MenuPopWindowBean;
 import com.wy.lpr.expresslove.zoom.DragPhotoActivity;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoImpl;
@@ -85,8 +90,10 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
     private RecyclerView mRecyclerView;
     private PhotoAdapter mPhotoAdapter;
     private HeartLayout mHeartLayout;//垂直方向的漂浮的红心
+    private ImageView mMoreIv;
 
     private List<TImage> mSelectMedia = new ArrayList<>();
+    private List<TImage> mAllImageForDelete = new ArrayList<>();
     private ArrayList<Uri> mUris = new ArrayList<>();
     private ArrayList<String> mPathList = new ArrayList<>();
     private String[] mImagePathFromSp, mOriginPathFromSp;
@@ -112,16 +119,27 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
 
     private void initView() {
         mHeartLayout = (HeartLayout) findViewById(R.id.heart_o_red_layout);
-        showRedHeartLayout();
+        //showRedHeartLayout();
+        mMoreIv = (ImageView) findViewById(R.id.more_iv);
+        mMoreIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setMoreListener();
+            }
+        });
+
     }
 
     private void initImage() {
-        //SharedPreferencesUtils.deleteDataForSp(mContext);
+        //从SP获取添加图片时保存的压缩后的路径
         mImagePathFromSp = SharedPreferencesUtils.getSharedPreferences(mContext, "ImagePath");
+        //从SP获取添加图片时保存的原图的路径
         mOriginPathFromSp = SharedPreferencesUtils.getSharedPreferences(mContext, "OriginPath");
         Log.i(TAG, "initImage mImagePathFromSp: " + Arrays.toString(mImagePathFromSp)
                 + ",mOriginPathFromSp: " + Arrays.toString(mOriginPathFromSp));
         if (mImagePathFromSp != null) {
+            //轮询图片路径，不为空的时候将路径转换为Uri形式，便于通过接口getTImagesWithUris获取到图片的TImage集合
+            //同时将路径保存到临时list,用于之后保存到SharedPreferences中
             for (String path : mImagePathFromSp) {
                 Log.i(TAG, "onResume imagePath: " + path);
                 if (!path.equals("")) {
@@ -135,6 +153,7 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
         }
 
         if (mOriginPathFromSp != null) {
+            //轮询图片路径，不为空的时候将原图路径保存到临时list，用于后续查看大图
             for (String originPath : mOriginPathFromSp) {
                 Log.i(TAG, "onResume originPath: " + originPath);
                 if (!originPath.equals("")) {
@@ -210,10 +229,11 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
                             configTakePhotoOption(takePhoto);
                             switch (position) {
                                 case 0:
+                                    //相机获取
                                     takePhoto.onPickFromCapture(imageUri);
                                     break;
                                 case 1:
-                                    //设置最多几张
+                                    //相册获取，设置最多选取几张
                                     takePhoto.onPickMultiple(20);
                                     break;
                             }
@@ -223,10 +243,16 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
                 case 1:
                     // 删除图片
                     mSelectMedia.remove(position);
+                    //删除图片对应的路径
                     mPathList.remove(position);
+                    //删除图片原路径
+                    mOriginPathList.remove(position);
                     mPhotoAdapter.notifyItemRemoved(position);
+                    //将更新后的路径保存到本地SP
                     String[] path = (String[]) mPathList.toArray(new String[0]);
                     SharedPreferencesUtils.setSharedPreferences(mContext, "ImagePath", path);
+                    String[] originPath = (String[]) mOriginPathList.toArray(new String[0]);
+                    SharedPreferencesUtils.setSharedPreferences(mContext, "OriginPath", originPath);
                     break;
             }
         }
@@ -238,7 +264,7 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
         public void onPicClick(View view, int position) {
             //startPhotoActivity(PhotoActivity.this, (ImageView) view, position);
             // data 可以多张图片List或单张图片，支持的类型可以是{@link Uri}, {@code url}, {@code path},{@link File}, {@link DrawableRes resId}…等
-            ImageViewer.load(mOriginPathList)//要加载的图片数据，单张或多张
+            ImageViewer.load(mOriginPathList)//要加载的原图数据，单张或多张
                     .selection(position)//当前选中位置
                     .indicator(true)//是否显示指示器，默认不显示
                     .imageLoader(new GlideImageLoader())//加载器，*必须配置，目前内置的有GlideImageLoader或PicassoImageLoader，也可以自己实现
@@ -264,6 +290,48 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
         overridePendingTransition(0, 0);
     }
 
+    //删除所有图片
+    private void deleteAllPic() {
+        //删除Adapter中的图片
+        mSelectMedia.removeAll(mAllImageForDelete);
+        mPhotoAdapter.notifyDataSetChanged();
+        //删除SharedPreferences中的图片路径，包括压缩路径和原路径
+        SharedPreferencesUtils.deleteDataForSp(mContext);
+    }
+
+    private void setMoreListener() {
+        int[] icons = {R.drawable.fire, R.drawable.ic_delete};
+        String[] texts = {"烟花表演", "全部删除"};
+        List<MenuPopWindowBean> list = new ArrayList<>();
+        MenuPopWindowBean bean;
+        for (int i = 0; i < icons.length; i++) {
+            bean = new MenuPopWindowBean();
+            bean.setIcon(icons[i]);
+            bean.setText(texts[i]);
+            list.add(bean);
+        }
+        MenuPopWindow pw = new MenuPopWindow(this, list);
+        pw.setOnItemClick(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Adapter adapter = parent.getAdapter();
+                MenuPopWindowBean thisBean = (MenuPopWindowBean) adapter.getItem(position);
+                Log.i("more", "onItemClick: " + thisBean.getText());
+                switch (position) {
+                    case 0:
+                        startActivity(new Intent(PhotoActivity.this, FireworksActivity.class));
+                        break;
+                    case 1:
+                        deleteAllPic();
+                        break;
+                }
+            }
+
+        });
+        pw.showPopUpWindow(mMoreIv);
+    }
+
     @Override
     public void takeCancel() {
     }
@@ -275,6 +343,15 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
     @Override
     public void takeSuccess(TResult result) {
         showImg(result.getImages());
+        saveAllImages(result.getImages());
+    }
+
+    private void saveAllImages(ArrayList<TImage> images) {
+        for (int i = 0; i < images.size(); i++) {
+            if (images.get(i).getCompressPath() != null) {
+                mAllImageForDelete.add(images.get(i));
+            }
+        }
     }
 
     //图片成功后返回执行的方法
@@ -308,6 +385,7 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
             if (images.get(i).getCompressPath() != null) {
                 Log.i(TAG, "showSaveImg getCompressPath: " + images.get(i).getCompressPath());
                 mSelectMedia.add(images.get(i));
+                mAllImageForDelete.add(images.get(i));
             }
         }
         Log.i(TAG, "showSaveImg mSelectMedia: " + mSelectMedia);

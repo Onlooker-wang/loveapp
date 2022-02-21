@@ -1,23 +1,42 @@
 package com.wy.lpr.expresslove.main;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.wy.lpr.expresslove.R;
 import com.wy.lpr.expresslove.base.CommonAudioActivity;
+import com.wy.lpr.expresslove.main.photo.PhotoActivity;
+import com.wy.lpr.expresslove.utils.heart.HeartLayout;
+
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class FireworksActivity extends CommonAudioActivity {
-
+    private static final String TAG = "FireworksActivity";
 
     private WebView webView;
+    private HeartLayout mHeartLayout;//垂直方向的漂浮的红心
+    private Random mRandom = new Random();
+    private Random mRandom2 = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fireworks);
+
+        mHeartLayout = (HeartLayout) findViewById(R.id.heart_o_red_layout);
         /*new Handler().postDelayed(new Runnable() { // 为了减少代码使用匿名Handler创建一个延时的调用
             public void run() {
                 Intent i = new Intent(Main3Activity.this, Main2Activity.class);
@@ -43,6 +62,8 @@ public class FireworksActivity extends CommonAudioActivity {
             }
         });
 
+        showRedHeartLayout();
+
     }
 
     public boolean onKeyUp(int keyCode, KeyEvent event) {
@@ -60,5 +81,49 @@ public class FireworksActivity extends CommonAudioActivity {
             finish();
         }
         return true;
+    }
+
+    private void showRedHeartLayout() {
+        Observable.timer(400, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Long>() {
+                    public void onCompleted() {
+                        mHeartLayout.setVisibility(View.VISIBLE);
+                        mHeartLayout.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(MyApplication.getContext(), "功能开发中，敬请期待...", Toast.LENGTH_SHORT).show();
+                                //startActivity(new Intent(FireworksActivity.this, FireworksActivity.class));
+                            }
+                        });
+                        delayDo2();
+                    }
+
+                    public void onError(Throwable e) {
+                    }
+
+                    public void onNext(Long aLong) {
+                    }
+                });
+    }
+
+    private int randomColor() {
+        return Color.rgb(mRandom.nextInt(255), mRandom.nextInt(255), mRandom.nextInt(255));
+    }
+
+    private void delayDo2() {
+        Observable.timer((long) mRandom2.nextInt(200), TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Long>() {
+                    public void onCompleted() {
+                        mHeartLayout.addHeart(randomColor());
+                        delayDo2();
+                    }
+
+                    public void onError(Throwable e) {
+                    }
+
+                    public void onNext(Long aLong) {
+
+                    }
+                });
     }
 }

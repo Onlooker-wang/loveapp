@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,21 +16,33 @@
     <com.wy.particletextview.View.ParticleTextView
         android:id="@+id/particleTextView1"
         android:layout_width="match_parent"
-        android:layout_height="100dp" />
+        android:layout_height="100dp"
+        android:visibility="gone" />
 
     <com.wy.particletextview.View.ParticleTextView
         android:id="@+id/particleTextView2"
         android:layout_width="match_parent"
-        android:layout_height="100dp" />
+        android:layout_height="100dp"
+        android:visibility="gone" />
 
     <com.wy.particletextview.View.ParticleTextView
         android:id="@+id/particleTextView3"
         android:layout_width="match_parent"
-        android:layout_height="100dp" />
+        android:layout_height="100dp"
+        android:visibility="gone" />
 
     <com.wy.particletextview.View.ParticleTextView
         android:id="@+id/particleTextView4"
         android:layout_width="match_parent"
-        android:layout_height="100dp" />
+        android:layout_height="100dp"
+        android:visibility="gone" />
 
-</RelativeLayout>
+    <com.wy.lpr.expresslove.utils.heart.HeartLayout
+        android:id="@+id/heart_o_red_layout"
+        android:layout_width="100dp"
+        android:layout_height="250dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="50dp"
+        android:background="@android:color/transparent"
+        android:visibility="visible" />
+</FrameLayout>

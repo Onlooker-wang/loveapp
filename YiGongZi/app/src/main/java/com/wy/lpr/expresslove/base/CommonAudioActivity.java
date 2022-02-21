@@ -18,13 +18,13 @@ public class CommonAudioActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (mPlayAudioUtil == null){
+        //播放背景音乐
+        /*if (mPlayAudioUtil == null){
             mPlayAudioUtil = new PlayAudioUtil(MyApplication.getContext());
             mPlayAudioUtil.startAudioPlayer();
-        }
-        ActionBar actionBar=getSupportActionBar();//后面几行都用于隐藏标题栏
-        if(actionBar !=null)
-        {
+        }*/
+        ActionBar actionBar = getSupportActionBar();//后面几行都用于隐藏标题栏
+        if (actionBar != null) {
             actionBar.hide();
         }
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
