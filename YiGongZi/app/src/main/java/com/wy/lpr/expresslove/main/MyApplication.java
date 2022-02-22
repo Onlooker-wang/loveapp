@@ -45,7 +45,7 @@ public class MyApplication extends Application {
         }
         Log.i(TAG, "init mImageUrl: " + mImageUrl);
         String[] imageUrl = (String[]) mImageUrl.toArray(new String[0]);
-        SharedPreferencesUtils.setSharedPreferences(mContext, "ImageUrl", imageUrl);
+        SharedPreferencesUtils.setSharedPreferences(mContext, "data", "ImageUrl", imageUrl);
     }
 
 

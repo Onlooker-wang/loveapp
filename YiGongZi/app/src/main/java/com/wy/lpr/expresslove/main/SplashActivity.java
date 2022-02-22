@@ -48,7 +48,7 @@ public class SplashActivity extends CommonAudioActivity {
         }*/
 
         mContext = MyApplication.getContext();
-        mLocalImagePath = SharedPreferencesUtils.getSharedPreferences(mContext, "OriginPath");
+        mLocalImagePath = SharedPreferencesUtils.getSharedPreferences(mContext, "data", "OriginPath");
         //mImageUrl = SharedPreferencesUtils.getSharedPreferences(mContext, "ImageUrl");
         //Log.i(TAG, "onCreate mImageUrl: " + Arrays.toString(mImageUrl));
         int bound = mLocalImagePath.length;
@@ -84,7 +84,7 @@ public class SplashActivity extends CommonAudioActivity {
     }
 
     private void enterHomeActivity() {
-        Intent intent = new Intent(this, DrawHeartActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }

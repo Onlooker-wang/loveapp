@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_layout"
     android:layout_width="match_parent"
     android:layout_height="180dp"
     android:background="@drawable/dialog_bg">
@@ -9,34 +10,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="小仙女"
+        android:text="提示"
         android:textColor="@color/black"
         android:textSize="20sp"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:lineSpacingExtra="3dp"
-        android:text="签到成功，获得200积分"
         android:textColor="@color/pink"
         android:textSize="16sp"
-        android:visibility="gone"/>
+        android:visibility="visible" />
+
     <com.wy.lpr.expresslove.utils.TypeTextView2
         android:id="@+id/dialog_sentence"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"
         android:gravity="center"
         android:textColor="#ffffff"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:visibility="gone" />
 
 
     <LinearLayout
@@ -49,10 +51,10 @@
             android:id="@+id/cancel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="5dp"
             android:layout_weight="1.0"
             android:background="@drawable/dialog_bt"
             android:gravity="center"
-            android:layout_margin="5dp"
             android:text="滚呐！肉麻啦"
             android:textColor="@color/white"
             android:textSize="20sp"
@@ -62,8 +64,8 @@
             android:id="@+id/smile"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1.0"
             android:layout_margin="5dp"
+            android:layout_weight="1.0"
             android:background="@drawable/bg_dialog_right_white"
             android:gravity="center"
             android:src="@drawable/smile"
@@ -78,10 +80,10 @@
             android:id="@+id/submit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="5dp"
             android:layout_weight="1.0"
             android:background="@drawable/dialog_bt"
             android:gravity="center"
-            android:layout_margin="5dp"
             android:text="开心！爱你呦"
             android:textColor="@color/white"
             android:textSize="20sp"

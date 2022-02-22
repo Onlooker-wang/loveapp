@@ -25,6 +25,7 @@ import com.wy.lpr.expresslove.base.CommonAudioActivity;
 import com.wy.lpr.expresslove.http.UpdateAppHttpUtil;
 import com.wy.lpr.expresslove.main.photo.PhotoActivity;
 import com.wy.lpr.expresslove.utils.CommonFlashAnimationHelper;
+import com.wy.lpr.expresslove.utils.Constant;
 import com.wy.lpr.expresslove.utils.TimeUtil;
 import com.wy.lpr.expresslove.utils.TypeTextView2;
 import com.wy.lpr.expresslove.utils.heartview.HeartView;
@@ -67,6 +68,7 @@ public class DrawHeartActivity extends CommonAudioActivity {
     private LinearLayout mClick;
     private static long mLastClickTime;
     private final static int MIN_CLICK_DELAY_TIME = 2800;
+    private String mCurrentUserName;
 
     private Handler timeHandler = new Handler() {
 
@@ -135,6 +137,10 @@ public class DrawHeartActivity extends CommonAudioActivity {
         filter.addAction(Intent.ACTION_TIME_TICK);
         registerReceiver(mBroadcastReceiver, filter);
 
+        //接受LoginActivity传递的username
+        Intent intent = getIntent();
+        mCurrentUserName = intent.getStringExtra(Constant.CURRENT_USER_NAME);
+
     }
 
 
@@ -193,7 +199,7 @@ public class DrawHeartActivity extends CommonAudioActivity {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(getApplicationContext(), "下次更新后再点我噢！", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(DrawHeartActivity.this, PhotoActivity.class));
+                startActivity(new Intent(DrawHeartActivity.this, PhotoActivity.class).putExtra(Constant.CURRENT_USER_NAME, mCurrentUserName));
             }
         });
     }

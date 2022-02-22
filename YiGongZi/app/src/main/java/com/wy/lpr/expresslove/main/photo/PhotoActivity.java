@@ -24,6 +24,7 @@ package com.wy.lpr.expresslove.main.photo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.net.Uri;
@@ -47,6 +48,7 @@ import com.byd.imageviewer.loader.GlideImageLoader;
 import com.wy.lpr.expresslove.R;
 import com.wy.lpr.expresslove.base.CommonAudioActivity;
 import com.wy.lpr.expresslove.main.FireworksActivity;
+import com.wy.lpr.expresslove.utils.Constant;
 import com.wy.lpr.expresslove.utils.SharedPreferencesUtils;
 import com.wy.lpr.expresslove.utils.heart.HeartLayout;
 import com.wy.lpr.expresslove.utils.popwindow.MenuPopWindow;
@@ -98,6 +100,7 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
     private ArrayList<String> mPathList = new ArrayList<>();
     private String[] mImagePathFromSp, mOriginPathFromSp;
     private ArrayList<String> mOriginPathList = new ArrayList<>();
+    private String mCurrentUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +123,8 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
     private void initView() {
         mHeartLayout = (HeartLayout) findViewById(R.id.heart_o_red_layout);
         //showRedHeartLayout();
+        mCurrentUserName = getIntent().getStringExtra(Constant.CURRENT_USER_NAME);
+        Log.i(TAG, "initView mCurrentUserName: " + mCurrentUserName);
         mMoreIv = (ImageView) findViewById(R.id.more_iv);
         mMoreIv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,9 +137,9 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
 
     private void initImage() {
         //从SP获取添加图片时保存的压缩后的路径
-        mImagePathFromSp = SharedPreferencesUtils.getSharedPreferences(mContext, "ImagePath");
+        mImagePathFromSp = SharedPreferencesUtils.getSharedPreferences(mContext, mCurrentUserName, "ImagePath");
         //从SP获取添加图片时保存的原图的路径
-        mOriginPathFromSp = SharedPreferencesUtils.getSharedPreferences(mContext, "OriginPath");
+        mOriginPathFromSp = SharedPreferencesUtils.getSharedPreferences(mContext, mCurrentUserName, "OriginPath");
         Log.i(TAG, "initImage mImagePathFromSp: " + Arrays.toString(mImagePathFromSp)
                 + ",mOriginPathFromSp: " + Arrays.toString(mOriginPathFromSp));
         if (mImagePathFromSp != null) {
@@ -250,9 +255,9 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
                     mPhotoAdapter.notifyItemRemoved(position);
                     //将更新后的路径保存到本地SP
                     String[] path = (String[]) mPathList.toArray(new String[0]);
-                    SharedPreferencesUtils.setSharedPreferences(mContext, "ImagePath", path);
+                    SharedPreferencesUtils.setSharedPreferences(mContext, mCurrentUserName, "ImagePath", path);
                     String[] originPath = (String[]) mOriginPathList.toArray(new String[0]);
-                    SharedPreferencesUtils.setSharedPreferences(mContext, "OriginPath", originPath);
+                    SharedPreferencesUtils.setSharedPreferences(mContext, mCurrentUserName, "OriginPath", originPath);
                     break;
             }
         }
@@ -296,7 +301,7 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
         mSelectMedia.removeAll(mAllImageForDelete);
         mPhotoAdapter.notifyDataSetChanged();
         //删除SharedPreferences中的图片路径，包括压缩路径和原路径
-        SharedPreferencesUtils.deleteDataForSp(mContext);
+        SharedPreferencesUtils.deleteDataForSp(mContext, mCurrentUserName);
     }
 
     private void setMoreListener() {
@@ -368,10 +373,10 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
             }
         }
         String[] path = (String[]) mPathList.toArray(new String[0]);
-        SharedPreferencesUtils.setSharedPreferences(mContext, "ImagePath", path);
+        SharedPreferencesUtils.setSharedPreferences(mContext, mCurrentUserName, "ImagePath", path);
 
         String[] originPath = (String[]) mOriginPathList.toArray(new String[0]);
-        SharedPreferencesUtils.setSharedPreferences(mContext, "OriginPath", originPath);
+        SharedPreferencesUtils.setSharedPreferences(mContext, mCurrentUserName, "OriginPath", originPath);
 
         if (mSelectMedia != null) {
             mPhotoAdapter.setList(mSelectMedia);

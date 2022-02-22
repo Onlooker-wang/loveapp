@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wy.lpr.expresslove.R;
@@ -33,6 +34,8 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
     private String title;
     private TypeTextView2 mTypeTextView;
     private AssetManager mAssetManager;
+    private RelativeLayout mDialogLayout;
+    private int mImageId = 0;
 
     public CommomDialog(Context context) {
         super(context);
@@ -52,7 +55,8 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
         this.content = content;
         this.listener = listener;
     }
-    public CommomDialog(AssetManager assetManager,Context context, int themeResId, String content, OnCloseListener listener) {
+
+    public CommomDialog(AssetManager assetManager, Context context, int themeResId, String content, OnCloseListener listener) {
         super(context, themeResId);
         Log.i(TAG, "CommomDialog: " + content + ",theme:" + themeResId + ",content:" + content);
         this.mContext = context;
@@ -68,6 +72,11 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
 
     public CommomDialog setTitle(String title) {
         this.title = title;
+        return this;
+    }
+
+    public CommomDialog setBackground(int imageId) {
+        mImageId = imageId;
         return this;
     }
 
@@ -91,9 +100,10 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
 
     private void initView() {
         contentTxt = (TextView) findViewById(R.id.content);
-        mTypeTextView=findViewById(R.id.dialog_sentence);
-        Typeface typeface = Typeface.createFromAsset(mAssetManager, "fonts/myttf.ttf");
-        mTypeTextView.setTypeface(typeface);
+        mDialogLayout = (RelativeLayout) findViewById(R.id.dialog_layout);
+        mTypeTextView = findViewById(R.id.dialog_sentence);
+        /*Typeface typeface = Typeface.createFromAsset(mAssetManager, "fonts/myttf.ttf");
+        mTypeTextView.setTypeface(typeface);*/
         titleTxt = (TextView) findViewById(R.id.title);
         submitTxt = (TextView) findViewById(R.id.submit);
         submitTxt.setOnClickListener(this);
@@ -117,6 +127,9 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
         if (!TextUtils.isEmpty(title)) {
             titleTxt.setText(title);
         }
+        if (mImageId != 0) {
+            mDialogLayout.setBackgroundResource(mImageId);
+        }
 
     }
 
@@ -124,8 +137,8 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.cancel:
-                Log.i(TAG, "onClick: cancel:"+cancelTxt.getText().toString());
-                if (cancelTxt.getText().toString().equals("滚呐！肉麻啦")){
+                /*Log.i(TAG, "onClick: cancel:" + cancelTxt.getText().toString());
+                if (cancelTxt.getText().toString().equals("滚呐！肉麻啦")) {
                     if (listener != null) {
                         listener.onClick(this, false);
                     }
@@ -134,20 +147,24 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
                     Animation scaleAnimation = AnimationUtils.loadAnimation(MyApplication.getContext(), R.anim.anim);
                     cancelTxt.startAnimation(scaleAnimation);
                     submitTxt.startAnimation(scaleAnimation);
-                    Log.i(TAG, "onClick: end"+cancelTxt.getText().toString());
-                }else {
+                    Log.i(TAG, "onClick: end" + cancelTxt.getText().toString());
+                } else {
                     if (listener != null) {
                         listener.onClick(this, true);
                     }
+                }*/
+
+                if (listener != null) {
+                    listener.onClick(this, false);
                 }
                 break;
             case R.id.submit:
-                Log.i(TAG, "onClick: submit"+submitTxt.getText().toString());
-                if (submitTxt.getText().toString().equals("开心！爱你呦")){
+                /*Log.i(TAG, "onClick: submit" + submitTxt.getText().toString());
+                if (submitTxt.getText().toString().equals("开心！爱你呦")) {
                     if (listener != null) {
                         listener.onClick(this, true);
                     }
-                }else {
+                } else {
                     if (listener != null) {
                         listener.onClick(this, false);
                     }
@@ -156,6 +173,9 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
                     Animation scaleAnimation = AnimationUtils.loadAnimation(MyApplication.getContext(), R.anim.anim);
                     submitTxt.startAnimation(scaleAnimation);
                     cancelTxt.startAnimation(scaleAnimation);
+                }*/
+                if (listener != null) {
+                    listener.onClick(this, true);
                 }
                 break;
             case R.id.smile:

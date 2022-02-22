@@ -21,20 +21,20 @@ public class SharedPreferencesUtils {
         return sp.getString(key, "");
     }
 
-    public static String[] getSharedPreferences(Context context, String key) {
+    public static String[] getSharedPreferences(Context context,String SPName, String key) {
         String regularEx = "#";
         String[] str;
-        SharedPreferences sp = context.getSharedPreferences("data", Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(SPName, Context.MODE_PRIVATE);
         String values;
         values = sp.getString(key, "");
         str = values.split(regularEx);
         return str;
     }
 
-    public static void setSharedPreferences(Context context, String key, String[] values) {
+    public static void setSharedPreferences(Context context,String SPName, String key, String[] values) {
         String regularEx = "#";
         String str = "";
-        SharedPreferences sp = context.getSharedPreferences("data", Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(SPName, Context.MODE_PRIVATE);
         if (values != null && values.length > 0) {
             for (String value : values) {
                 str += value;
@@ -46,8 +46,8 @@ public class SharedPreferencesUtils {
         }
     }
 
-    public static void deleteDataForSp(Context context) {
-        SharedPreferences sp = context.getSharedPreferences("data", Context.MODE_PRIVATE);
+    public static void deleteDataForSp(Context context,String SPName) {
+        SharedPreferences sp = context.getSharedPreferences(SPName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.clear();
         editor.apply();
