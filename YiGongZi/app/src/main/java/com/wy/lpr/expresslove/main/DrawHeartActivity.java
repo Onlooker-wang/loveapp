@@ -1,7 +1,10 @@
 package com.wy.lpr.expresslove.main;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
@@ -17,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.byd.update_app.UpdateAppManager;
 import com.byd.update_app.listener.ExceptionHandler;
@@ -113,6 +118,12 @@ public class DrawHeartActivity extends CommonAudioActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         CommonFlashAnimationHelper.destroySplashAnimator();
@@ -121,8 +132,7 @@ public class DrawHeartActivity extends CommonAudioActivity {
     private void initView() {
         mWebViewTop = (WebView) findViewById(R.id.webView_1);
         mWebViewBottom = (WebView) findViewById(R.id.webView_2);
-        initWebView(mWebViewTop, "file:///android_asset/index.html");
-        initWebView(mWebViewBottom, "file:///android_asset/index2.html");
+
         mTypeTextView = (TypeTextView2) findViewById(R.id.typeTextView);
         mTimeUtil = new TimeUtil();
         hoursTv = (TextView) findViewById(R.id.hours_tv);
@@ -137,10 +147,13 @@ public class DrawHeartActivity extends CommonAudioActivity {
         filter.addAction(Intent.ACTION_TIME_TICK);
         registerReceiver(mBroadcastReceiver, filter);
 
-        //接受LoginActivity传递的username
-        Intent intent = getIntent();
-        mCurrentUserName = intent.getStringExtra(Constant.CURRENT_USER_NAME);
 
+    }
+
+    private void initData() {
+        mHeartView.reDraw();
+        initWebView(mWebViewTop, "file:///android_asset/index.html");
+        initWebView(mWebViewBottom, "file:///android_asset/index2.html");
     }
 
 
@@ -378,5 +391,26 @@ public class DrawHeartActivity extends CommonAudioActivity {
                 .update();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    private void exit() {
+        Dialog dialog = new AlertDialog.Builder(DrawHeartActivity.this)
+                .setTitle("退出").setMessage("你确定要退出吗？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+//                        for (Activity ac : allActivity) {
+//                            ac.finish();
+//                            dialog.dismiss();
+//                        }
+                    }
+                }).setNegativeButton("取消", null).create();
+        dialog.show();
+    }
 }
 

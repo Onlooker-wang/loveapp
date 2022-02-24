@@ -8,13 +8,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
 import com.wy.lpr.expresslove.R;
+import com.wy.lpr.expresslove.main.password.PassWordActivity;
+import com.wy.lpr.expresslove.main.password.PassWordAdapter;
 import com.wy.lpr.expresslove.main.photo.PhotoActivity;
 import com.wy.lpr.expresslove.utils.CommomDialog;
+import com.wy.lpr.expresslove.utils.CommonFlashAnimationHelper;
 import com.wy.lpr.expresslove.utils.Constant;
 import com.wy.lpr.expresslove.utils.SharedPreferencesUtils;
 
@@ -31,21 +36,23 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private static final String TAG = "LoginActivity";
 
     private Context mContext;
-    private Button mLoginBtn = null;
+    private ImageView mLoginBtn = null;
     private EditText mUserIdEt = null;
     private EditText mPassEt = null;
     private TextView mPromptText = null;
     private CheckBox mCbRememberPass = null;
     private CheckBox mCbAutoLogin = null;
     private SharedPreferences mSharedPreferences = null;
+    private ImageView mPassWordVisible;
+    private TextView mForgetPass;
 
-    private String mSpKeyUser = "UserName";
-    private String mSpKeyPass = "PassWord";
-    private String mSpLastKeyUser = "LastUserName";
-    private String mSpLastKeyPass = "LastPassWord";
-    private String mSpKeyRememberPass = "REMEMBERPASS";
-    private String mSpKeyAutoLogin = "AUTOLOGIN";
-    private String mSpName = "userInfo";
+    private String mSpKeyUser = Constant.USER_NAME;
+    private String mSpKeyPass = Constant.PASS_WORD;
+    private String mSpLastKeyUser = Constant.LAST_USER_NAME;
+    private String mSpLastKeyPass = Constant.LAST_PASS_WORD;
+    private String mSpKeyRememberPass = Constant.REMEMBER_PASS;
+    private String mSpKeyAutoLogin = Constant.AUTO_LOGIN;
+    private String mSpName = Constant.USER_INFO_SP;
     private String[] mUserName;
     private String[] mPassWord;
     private String mCurrentUserId;
@@ -65,8 +72,15 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     private void initView() {
-        mLoginBtn = (Button) findViewById(R.id.loginBtn);
+        mLoginBtn = (ImageView) findViewById(R.id.loginBtn);
         mLoginBtn.setOnClickListener(this);
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                CommonFlashAnimationHelper.showSplash(mLoginBtn, R.drawable.login1);
+            }
+        });
+
         mUserIdEt = (EditText) findViewById(R.id.userId);
         mPassEt = (EditText) findViewById(R.id.pass);
         mPromptText = (TextView) findViewById(R.id.promptText);
@@ -75,8 +89,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         mSharedPreferences = this.getSharedPreferences(mSpName, Context.MODE_PRIVATE);
         mUserIdEt.setSelection(mUserIdEt.length());
         mUserIdEt.setFilters(new InputFilter[]{new LengthFilter(8, getContext())});
-
-
+        mPassWordVisible = (ImageView) findViewById(R.id.pass_word_visible);
+        setPasswordVisible(false);
+        mForgetPass = (TextView) findViewById(R.id.forget_pass);
     }
 
     private void initData() {
@@ -137,6 +152,32 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 }
             }
         });
+
+        //密码可见的点击事件
+        mPassWordVisible.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mPassEt.getInputType() != InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+                    mPassEt.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    setPasswordVisible(true);
+                } else {
+                    mPassEt.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    setPasswordVisible(false);
+                }
+                if (null != mPassEt) {
+                    mPassEt.setSelection(mPassEt.getText().length());
+                }
+            }
+        });
+
+        //忘记密码点击事件
+        mForgetPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, PassWordActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void ifRememberPass() {
@@ -152,6 +193,14 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             editor.putString(mSpLastKeyUser, "");
             editor.putString(mSpLastKeyPass, "");
             editor.apply();
+        }
+    }
+
+    private void setPasswordVisible(boolean visible) {
+        if (visible) {
+            mPassWordVisible.setImageDrawable(mContext.getDrawable(R.drawable.wifi_password_visible));
+        } else {
+            mPassWordVisible.setImageDrawable(mContext.getDrawable(R.drawable.invisible));
         }
     }
 
@@ -180,8 +229,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                         String[] pass = (String[]) mPassWordList.toArray(new String[0]);
                         SharedPreferencesUtils.setSharedPreferences(mContext, mSpName, mSpKeyPass, pass);
                         ifRememberPass();
+                        SharedPreferencesUtils.putString(mContext, Constant.USER_INFO_SP, Constant.CURRENT_USER_NAME, mCurrentUserId);
                         Intent intent = new Intent(LoginActivity.this, DrawHeartActivity.class);
-                        intent.putExtra(Constant.CURRENT_USER_NAME, mCurrentUserId);
+                        //intent.putExtra(Constant.CURRENT_USER_NAME, mCurrentUserId);
                         startActivity(intent);
                         finish();
                     } else {
@@ -200,8 +250,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     if (mPassWordList.get(i).equals(mCurrentPassWord)) {
                         Toast.makeText(this, "登录成功！", Toast.LENGTH_LONG).show();
                         ifRememberPass();
+                        SharedPreferencesUtils.putString(mContext, Constant.USER_INFO_SP, Constant.CURRENT_USER_NAME, mCurrentUserId);
                         Intent intent = new Intent(LoginActivity.this, DrawHeartActivity.class);
-                        intent.putExtra(Constant.CURRENT_USER_NAME, mCurrentUserId);
+                        //intent.putExtra(Constant.CURRENT_USER_NAME, mCurrentUserId);
+                        Log.i(TAG, "onClick mCurrentUserName: " + mCurrentUserId);
                         startActivity(intent);
                         finish();
                     } else {
@@ -212,6 +264,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        CommonFlashAnimationHelper.destroySplashAnimator();
     }
 }
 

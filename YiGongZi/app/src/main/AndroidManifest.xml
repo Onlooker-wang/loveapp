@@ -21,7 +21,6 @@
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />
-
         <meta-data
             android:name="UPDATE_APP_KEY"
             android:value="ab55ce55Ac4bcP408cPb8c1Aaeac179c5f6f" />
@@ -33,19 +32,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main.DrawHeartActivity" />
+        <activity
+            android:name=".main.DrawHeartActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".main.MainActivity" />
         <activity android:name=".main.WelcomeGuideActivity" />
         <activity android:name=".main.FireworksActivity" />
         <activity android:name=".sample.TextSampleActivity" />
         <activity android:name=".main.PictureAnimActivity" />
+        <activity android:name=".main.password.PassWordActivity" />
         <activity android:name=".main.photo.PhotoActivity" />
         <activity
-            android:name="com.wy.lpr.expresslove.zoom.DragPhotoActivity"
+            android:name=".zoom.DragPhotoActivity"
             android:theme="@style/translucent" />
         <activity android:name=".main.LoginActivity" />
-        <!--<activity android:name=".main.SplashActivity" />-->
-
     </application>
 
 </manifest>

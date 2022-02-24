@@ -48,6 +48,7 @@ import com.byd.imageviewer.loader.GlideImageLoader;
 import com.wy.lpr.expresslove.R;
 import com.wy.lpr.expresslove.base.CommonAudioActivity;
 import com.wy.lpr.expresslove.main.FireworksActivity;
+import com.wy.lpr.expresslove.main.LoginActivity;
 import com.wy.lpr.expresslove.utils.Constant;
 import com.wy.lpr.expresslove.utils.SharedPreferencesUtils;
 import com.wy.lpr.expresslove.utils.heart.HeartLayout;
@@ -123,7 +124,7 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
     private void initView() {
         mHeartLayout = (HeartLayout) findViewById(R.id.heart_o_red_layout);
         //showRedHeartLayout();
-        mCurrentUserName = getIntent().getStringExtra(Constant.CURRENT_USER_NAME);
+        mCurrentUserName = SharedPreferencesUtils.getString(mContext, Constant.USER_INFO_SP, Constant.CURRENT_USER_NAME);
         Log.i(TAG, "initView mCurrentUserName: " + mCurrentUserName);
         mMoreIv = (ImageView) findViewById(R.id.more_iv);
         mMoreIv.setOnClickListener(new View.OnClickListener() {
@@ -305,8 +306,8 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
     }
 
     private void setMoreListener() {
-        int[] icons = {R.drawable.fire, R.drawable.ic_delete};
-        String[] texts = {"烟花表演", "全部删除"};
+        int[] icons = {R.drawable.fire, R.drawable.ic_delete, R.drawable.loginout};
+        String[] texts = {"烟花表演", "全部删除", "退出登录"};
         List<MenuPopWindowBean> list = new ArrayList<>();
         MenuPopWindowBean bean;
         for (int i = 0; i < icons.length; i++) {
@@ -315,7 +316,7 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
             bean.setText(texts[i]);
             list.add(bean);
         }
-        MenuPopWindow pw = new MenuPopWindow(this, list);
+        final MenuPopWindow pw = new MenuPopWindow(this, list);
         pw.setOnItemClick(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -326,10 +327,15 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
                 switch (position) {
                     case 0:
                         startActivity(new Intent(PhotoActivity.this, FireworksActivity.class));
+                        pw.dismiss();
                         break;
                     case 1:
                         deleteAllPic();
+                        pw.dismiss();
                         break;
+                    case 2:
+                        startActivity(new Intent(PhotoActivity.this, LoginActivity.class));
+                        finish();
                 }
             }
 

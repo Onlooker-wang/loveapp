@@ -303,7 +303,7 @@ public class DownloadService extends Service {
                 if (appFile.exists() && appFile.isFile()) {
                     appFile.delete();
                 }
-                Toast.makeText(DownloadService.this, "下载失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DownloadService.this, "数据包解析异常，更新失败...", Toast.LENGTH_SHORT).show();
                 return;
             }
 

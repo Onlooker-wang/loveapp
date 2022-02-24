@@ -9,19 +9,19 @@ import android.content.SharedPreferences;
 
 public class SharedPreferencesUtils {
 
-    public static void putString(Context context, String key, String content) {
-        SharedPreferences sp = context.getSharedPreferences("userInfo.txt", Context.MODE_PRIVATE);
+    public static void putString(Context context, String SPName, String key, String content) {
+        SharedPreferences sp = context.getSharedPreferences(SPName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(key, content);
         editor.apply();
     }
 
-    public static String getString(Context context, String key) {
-        SharedPreferences sp = context.getSharedPreferences("userInfo.txt", Context.MODE_PRIVATE);
+    public static String getString(Context context, String SPName, String key) {
+        SharedPreferences sp = context.getSharedPreferences(SPName, Context.MODE_PRIVATE);
         return sp.getString(key, "");
     }
 
-    public static String[] getSharedPreferences(Context context,String SPName, String key) {
+    public static String[] getSharedPreferences(Context context, String SPName, String key) {
         String regularEx = "#";
         String[] str;
         SharedPreferences sp = context.getSharedPreferences(SPName, Context.MODE_PRIVATE);
@@ -31,7 +31,7 @@ public class SharedPreferencesUtils {
         return str;
     }
 
-    public static void setSharedPreferences(Context context,String SPName, String key, String[] values) {
+    public static void setSharedPreferences(Context context, String SPName, String key, String[] values) {
         String regularEx = "#";
         String str = "";
         SharedPreferences sp = context.getSharedPreferences(SPName, Context.MODE_PRIVATE);
@@ -46,7 +46,7 @@ public class SharedPreferencesUtils {
         }
     }
 
-    public static void deleteDataForSp(Context context,String SPName) {
+    public static void deleteDataForSp(Context context, String SPName) {
         SharedPreferences sp = context.getSharedPreferences(SPName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.clear();

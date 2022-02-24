@@ -77,9 +77,9 @@ public class HeartView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void reDraw() {
         blooms.clear();
-
-
-        drawOnNewThread();
+        if (canvas != null) {
+            drawOnNewThread();
+        }
     }
 
     @Override

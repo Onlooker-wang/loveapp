@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.wy.lpr.expresslove.R;
 import com.wy.lpr.expresslove.base.CommonAudioActivity;
 import com.wy.lpr.expresslove.main.photo.PhotoActivity;
+import com.wy.lpr.expresslove.utils.Constant;
 import com.wy.lpr.expresslove.utils.RandomUtil;
 import com.wy.lpr.expresslove.utils.SharedPreferencesUtils;
 import com.wy.lpr.expresslove.utils.SpUtils;
@@ -33,6 +34,7 @@ public class SplashActivity extends CommonAudioActivity {
     private Context mContext;
     private String[] mLocalImagePath;
     private TextSurface mTextSurface;
+    private String[] mUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,10 @@ public class SplashActivity extends CommonAudioActivity {
         }*/
 
         mContext = MyApplication.getContext();
-        mLocalImagePath = SharedPreferencesUtils.getSharedPreferences(mContext, "data", "OriginPath");
+        mUserName = SharedPreferencesUtils.getSharedPreferences(mContext, Constant.USER_INFO_SP, Constant.USER_NAME);
+        int count = mUserName.length;
+        int a = RandomUtil.random(count);
+        mLocalImagePath = SharedPreferencesUtils.getSharedPreferences(mContext, mUserName[a], "OriginPath");
         //mImageUrl = SharedPreferencesUtils.getSharedPreferences(mContext, "ImageUrl");
         //Log.i(TAG, "onCreate mImageUrl: " + Arrays.toString(mImageUrl));
         int bound = mLocalImagePath.length;
