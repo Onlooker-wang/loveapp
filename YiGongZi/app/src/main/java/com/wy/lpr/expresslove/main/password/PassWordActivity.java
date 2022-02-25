@@ -1,18 +1,16 @@
 package com.wy.lpr.expresslove.main.password;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.wy.lpr.expresslove.R;
 import com.wy.lpr.expresslove.base.CommonAudioActivity;
-import com.wy.lpr.expresslove.main.MyApplication;
+import com.wy.lpr.expresslove.app.MyApplication;
 import com.wy.lpr.expresslove.utils.Constant;
 import com.wy.lpr.expresslove.utils.SharedPreferencesUtils;
 

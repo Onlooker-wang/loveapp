@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.wy.lpr.expresslove"
-        minSdkVersion 22
+        minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
         versionName "0.2.0"

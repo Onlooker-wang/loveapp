@@ -18,6 +18,7 @@ import android.widget.*;
 
 import com.wy.lpr.expresslove.R;
 import com.wy.lpr.expresslove.adapter.PopListAdapter;
+import com.wy.lpr.expresslove.app.MyApplication;
 import com.wy.lpr.expresslove.main.password.PassWordActivity;
 import com.wy.lpr.expresslove.utils.CommomDialog;
 import com.wy.lpr.expresslove.utils.CommonFlashAnimationHelper;
@@ -27,7 +28,7 @@ import com.wy.lpr.expresslove.utils.SharedPreferencesUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.wy.lpr.expresslove.main.MyApplication.getContext;
+import static com.wy.lpr.expresslove.app.MyApplication.getContext;
 
 
 /**
@@ -65,6 +66,7 @@ public class LoginActivity extends Activity {
     private String mCurrentPassWord;
     private List<String> mUserNameList = new ArrayList<>();
     private List<String> mPassWordList = new ArrayList<>();
+    private String mPassForCheck;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -125,9 +127,10 @@ public class LoginActivity extends Activity {
             if (mSharedPreferences.getBoolean(mSpKeyAutoLogin, false)) {
                 //设置默认是自动登录状态
                 mCbAutoLogin.setChecked(true);
+                SharedPreferencesUtils.putString(mContext, Constant.USER_INFO_SP,
+                        Constant.CURRENT_USER_NAME, mSharedPreferences.getString(mSpLastKeyUser, ""));
                 //跳转界面
                 Intent intent = new Intent(this, DrawHeartActivity.class);
-                intent.putExtra(Constant.CURRENT_USER_NAME, mSharedPreferences.getString(mSpLastKeyUser, ""));
                 startActivity(intent);
                 finish();
 
@@ -199,21 +202,133 @@ public class LoginActivity extends Activity {
         mForgetPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, PassWordActivity.class);
-                startActivityForResult(intent, Constant.REQUEST_CODE);
+                mPassForCheck = SharedPreferencesUtils.getString(mContext, Constant.USER_INFO_SP, Constant.PASSWORD_FOR_CHECK_PASS);
+
+                if (mPassForCheck.equals("")) {
+                    popSetPasswordDialog();
+                } else {
+                    popInputPasswordDialog();
+                }
+
                 Log.i(TAG, "onClick: mForgetPass");
             }
         });
 
-        //登录
+        //登录按钮
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userLogin();
+                userRegisterOrLogin();
             }
         });
     }
 
+    //忘记密码弹出设置查看密码对话框
+    private void popSetPasswordDialog() {
+        new CommomDialog(LoginActivity.this, R.style.dialog, new CommomDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, boolean confirm) {
+
+                if (confirm) {
+                    if (CommomDialog.getPassword().equals("")) {
+                        Toast.makeText(mContext, "密码不能为空", Toast.LENGTH_SHORT).show();
+                    } else {
+                        SharedPreferencesUtils.putString(mContext, Constant.USER_INFO_SP, Constant.PASSWORD_FOR_CHECK_PASS, CommomDialog.getPassword());
+                        dialog.dismiss();
+                        Intent intent = new Intent(LoginActivity.this, PassWordActivity.class);
+                        startActivityForResult(intent, Constant.REQUEST_CODE);
+                    }
+                } else {
+                    dialog.dismiss();
+                }
+            }
+        })
+                .setItemVisibility(Constant.PASSWORD_INPUT_ET)
+                .setTitle("请设置密码：")
+                .setNegativeButton("取消")
+                .setPositiveButton("保存")
+                .setBackground(R.color.white)
+                .show();
+    }
+
+    //忘记密码弹出输入查看密码对话框
+    private void popInputPasswordDialog() {
+        new CommomDialog(LoginActivity.this, R.style.dialog, new CommomDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, boolean confirm) {
+                if (confirm) {
+                    if (CommomDialog.getPassword().equals(mPassForCheck)) {
+                        dialog.dismiss();
+                        Intent intent = new Intent(LoginActivity.this, PassWordActivity.class);
+                        startActivityForResult(intent, Constant.REQUEST_CODE);
+                    } else {
+                        Toast.makeText(mContext, "密码输入错误，请重试！", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    dialog.dismiss();
+                }
+            }
+        })
+                .setItemVisibility(Constant.PASSWORD_INPUT_ET)
+                .setBackground(R.color.white)
+                .setTitle("请输入密码：")
+                .setPositiveButton("确定")
+                .setNegativeButton("取消")
+                .show();
+    }
+
+    //用户注册对话框
+    private void userRegisterDialog() {
+        new CommomDialog(LoginActivity.this, R.style.dialog, "当前用户名不存在，是否注册新用户？", new CommomDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, boolean confirm) {
+                if (confirm) {
+                    mUserNameList.add(mCurrentUserId);
+                    mPassWordList.add(mCurrentPassWord);
+                    String[] userName = (String[]) mUserNameList.toArray(new String[0]);
+                    SharedPreferencesUtils.setSharedPreferences(mContext, mSpName, mSpKeyUser, userName);
+                    String[] pass = (String[]) mPassWordList.toArray(new String[0]);
+                    SharedPreferencesUtils.setSharedPreferences(mContext, mSpName, mSpKeyPass, pass);
+                    ifRememberPass();
+                    SharedPreferencesUtils.putString(mContext, Constant.USER_INFO_SP, Constant.CURRENT_USER_NAME, mCurrentUserId);
+                    Intent intent = new Intent(LoginActivity.this, DrawHeartActivity.class);
+                    //intent.putExtra(Constant.CURRENT_USER_NAME, mCurrentUserId);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    dialog.dismiss();
+                }
+            }
+        })
+                .setBackground(R.color.white)
+                .setPositiveButton("注册")
+                .setNegativeButton("取消")
+                .show();
+    }
+
+    //用户登录
+    private void userLogin() {
+        for (int i = 0; i < mUserNameList.size(); i++) {
+            if (mUserNameList.get(i).equals(mCurrentUserId)) {
+                if (mPassWordList.get(i).equals(mCurrentPassWord)) {
+                    Toast.makeText(mContext, "登录成功！", Toast.LENGTH_LONG).show();
+                    ifRememberPass();
+                    SharedPreferencesUtils.putString(mContext, Constant.USER_INFO_SP, Constant.CURRENT_USER_NAME, mCurrentUserId);
+                    Intent intent = new Intent(LoginActivity.this, DrawHeartActivity.class);
+                    //intent.putExtra(Constant.CURRENT_USER_NAME, mCurrentUserId);
+                    Log.i(TAG, "onClick mCurrentUserName: " + mCurrentUserId);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(mContext, "密码不正确", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+
+        }
+    }
+
+    //是否记住密码
     private void ifRememberPass() {
         if (mCbRememberPass.isChecked()) {
             //记住用户名、密码、
@@ -230,6 +345,7 @@ public class LoginActivity extends Activity {
         }
     }
 
+    //设置密码是否可见
     private void setPasswordVisible(boolean visible) {
         if (visible) {
             mPassWordVisible.setImageDrawable(mContext.getDrawable(R.drawable.wifi_password_visible));
@@ -238,7 +354,8 @@ public class LoginActivity extends Activity {
         }
     }
 
-    private void userLogin() {
+    //用户登录及注册相关
+    private void userRegisterOrLogin() {
         mCurrentUserId = mUserIdEt.getText().toString().trim();
         mCurrentPassWord = mPassEt.getText().toString().trim();
         if (mCurrentUserId.equals("")) {
@@ -251,51 +368,9 @@ public class LoginActivity extends Activity {
         }
 
         if (!mUserNameList.contains(mCurrentUserId)) {
-            new CommomDialog(LoginActivity.this, R.style.dialog, "用户名不存在，是否注册新用户？", new CommomDialog.OnCloseListener() {
-                @Override
-                public void onClick(Dialog dialog, boolean confirm) {
-                    if (confirm) {
-                        mUserNameList.add(mCurrentUserId);
-                        mPassWordList.add(mCurrentPassWord);
-                        String[] userName = (String[]) mUserNameList.toArray(new String[0]);
-                        SharedPreferencesUtils.setSharedPreferences(mContext, mSpName, mSpKeyUser, userName);
-                        String[] pass = (String[]) mPassWordList.toArray(new String[0]);
-                        SharedPreferencesUtils.setSharedPreferences(mContext, mSpName, mSpKeyPass, pass);
-                        ifRememberPass();
-                        SharedPreferencesUtils.putString(mContext, Constant.USER_INFO_SP, Constant.CURRENT_USER_NAME, mCurrentUserId);
-                        Intent intent = new Intent(LoginActivity.this, DrawHeartActivity.class);
-                        //intent.putExtra(Constant.CURRENT_USER_NAME, mCurrentUserId);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        dialog.dismiss();
-                    }
-                }
-            })
-                    .setBackground(R.color.white)
-                    .setPositiveButton("注册")
-                    .setNegativeButton("取消")
-                    .show();
-
+            userRegisterDialog();
         } else {
-            for (int i = 0; i < mUserNameList.size(); i++) {
-                if (mUserNameList.get(i).equals(mCurrentUserId)) {
-                    if (mPassWordList.get(i).equals(mCurrentPassWord)) {
-                        Toast.makeText(mContext, "登录成功！", Toast.LENGTH_LONG).show();
-                        ifRememberPass();
-                        SharedPreferencesUtils.putString(mContext, Constant.USER_INFO_SP, Constant.CURRENT_USER_NAME, mCurrentUserId);
-                        Intent intent = new Intent(LoginActivity.this, DrawHeartActivity.class);
-                        //intent.putExtra(Constant.CURRENT_USER_NAME, mCurrentUserId);
-                        Log.i(TAG, "onClick mCurrentUserName: " + mCurrentUserId);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Toast.makeText(mContext, "密码不正确", Toast.LENGTH_LONG).show();
-                    }
-                    return;
-                }
-
-            }
+            userLogin();
         }
     }
 
@@ -322,7 +397,7 @@ public class LoginActivity extends Activity {
             }
         });
         mPopupWindow = new PopupWindow(contentView,
-                mUserInputLayout.getWidth(),mUserInputLayout.getHeight()*3 , true);
+                mUserInputLayout.getWidth(), mUserInputLayout.getHeight() * 3, true);
         mPopupWindow.setOutsideTouchable(true);
 
         mPopupWindow.setTouchable(true);

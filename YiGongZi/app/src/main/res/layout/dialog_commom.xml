@@ -8,11 +8,12 @@
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="提示"
+        android:layout_height="40dp"
+        android:background="@color/font_green"
+        android:gravity="center"
+        android:text="温馨提示"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:visibility="visible" />
 
     <TextView
@@ -23,9 +24,21 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:lineSpacingExtra="3dp"
-        android:textColor="@color/pink"
-        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
         android:visibility="visible" />
+
+    <EditText
+        android:id="@+id/password_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:lineSpacingExtra="3dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:visibility="gone" />
 
     <com.wy.lpr.expresslove.utils.TypeTextView2
         android:id="@+id/dialog_sentence"
@@ -43,7 +56,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true">
 

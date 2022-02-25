@@ -1,7 +1,6 @@
-package com.wy.lpr.expresslove.main;
+package com.wy.lpr.expresslove.app;
 
 import android.app.Application;
-import android.app.SharedElementCallback;
 import android.content.Context;
 import android.util.Log;
 
@@ -11,7 +10,6 @@ import com.wy.lpr.expresslove.utils.SharedPreferencesUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MyApplication extends Application {
     private static final String TAG = "MyApplication";

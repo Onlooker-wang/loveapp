@@ -211,7 +211,7 @@ public class DrawHeartActivity extends CommonAudioActivity {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(getApplicationContext(), "下次更新后再点我噢！", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(DrawHeartActivity.this, PhotoActivity.class).putExtra(Constant.CURRENT_USER_NAME, mCurrentUserName));
+                startActivity(new Intent(DrawHeartActivity.this, PhotoActivity.class));
             }
         });
     }

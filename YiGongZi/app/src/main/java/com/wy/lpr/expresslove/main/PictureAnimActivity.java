@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 
 import com.wy.lpr.expresslove.R;
+import com.wy.lpr.expresslove.app.MyApplication;
 import com.wy.lpr.expresslove.base.CommonAudioActivity;
 import com.wy.lpr.expresslove.utils.AnimationView;
 import com.wy.lpr.expresslove.utils.ClickUtils;
@@ -53,7 +54,7 @@ import rx.functions.Action0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.wy.lpr.expresslove.main.MyApplication.getContext;
+import static com.wy.lpr.expresslove.app.MyApplication.getContext;
 
 
 public class PictureAnimActivity extends CommonAudioActivity implements AnimationView.AnimCallback {

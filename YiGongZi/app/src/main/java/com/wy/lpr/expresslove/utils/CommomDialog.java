@@ -3,65 +3,66 @@ package com.wy.lpr.expresslove.utils;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wy.lpr.expresslove.R;
-import com.wy.lpr.expresslove.main.MyApplication;
 
 public class CommomDialog extends Dialog implements View.OnClickListener {
     private static final String TAG = "CommomDialog";
 
-    private TextView contentTxt;
-    private TextView titleTxt;
-    private TextView submitTxt;
-    private TextView cancelTxt;
+    private TextView mContentTxt;
+    private TextView mTitleTxt;
+    private TextView mSubmitTxt;
+    private TextView mCancelTxt;
     private ImageView mSmile, mSad;
+    private static EditText mPasswordInput;
 
     private Context mContext;
-    private String content;
-    private OnCloseListener listener;
-    private String positiveName;
-    private String negativeName;
-    private String title;
+    private String mContent;
+    private OnCloseListener mListener;
+    private String mPositiveName;
+    private String mNegativeName;
+    private String mTitle;
     private TypeTextView2 mTypeTextView;
     private AssetManager mAssetManager;
     private RelativeLayout mDialogLayout;
     private int mImageId = 0;
+    private int mResId = 0;
+    private boolean mItemVisible;
 
-    public CommomDialog(Context context) {
-        super(context);
+    public CommomDialog(Context context, int themeResId, OnCloseListener listener) {
+        super(context, themeResId);
         this.mContext = context;
+        this.mListener = listener;
     }
 
     public CommomDialog(Context context, int themeResId, String content) {
         super(context, themeResId);
         this.mContext = context;
-        this.content = content;
+        this.mContent = content;
     }
 
     public CommomDialog(Context context, int themeResId, String content, OnCloseListener listener) {
         super(context, themeResId);
         Log.i(TAG, "CommomDialog: " + content + ",theme:" + themeResId + ",content:" + content);
         this.mContext = context;
-        this.content = content;
-        this.listener = listener;
+        this.mContent = content;
+        this.mListener = listener;
     }
 
     public CommomDialog(AssetManager assetManager, Context context, int themeResId, String content, OnCloseListener listener) {
         super(context, themeResId);
         Log.i(TAG, "CommomDialog: " + content + ",theme:" + themeResId + ",content:" + content);
         this.mContext = context;
-        this.content = content;
-        this.listener = listener;
+        this.mContent = content;
+        this.mListener = listener;
         this.mAssetManager = assetManager;
     }
 
@@ -71,7 +72,7 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
     }
 
     public CommomDialog setTitle(String title) {
-        this.title = title;
+        this.mTitle = title;
         return this;
     }
 
@@ -81,13 +82,24 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
     }
 
     public CommomDialog setPositiveButton(String name) {
-        this.positiveName = name;
+        this.mPositiveName = name;
         return this;
     }
 
     public CommomDialog setNegativeButton(String name) {
-        this.negativeName = name;
+        this.mNegativeName = name;
         return this;
+    }
+
+    public CommomDialog setItemVisibility(int resId) {
+        mResId = resId;
+        return this;
+    }
+
+    public static String getPassword() {
+        String passWord = mPasswordInput.getText().toString().trim();
+        Log.i(TAG, "getPassword: " + passWord);
+        return passWord;
     }
 
     @Override
@@ -99,36 +111,45 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
     }
 
     private void initView() {
-        contentTxt = (TextView) findViewById(R.id.content);
+        mContentTxt = (TextView) findViewById(R.id.content);
+        mPasswordInput = (EditText) findViewById(R.id.password_input);
         mDialogLayout = (RelativeLayout) findViewById(R.id.dialog_layout);
         mTypeTextView = findViewById(R.id.dialog_sentence);
         /*Typeface typeface = Typeface.createFromAsset(mAssetManager, "fonts/myttf.ttf");
         mTypeTextView.setTypeface(typeface);*/
-        titleTxt = (TextView) findViewById(R.id.title);
-        submitTxt = (TextView) findViewById(R.id.submit);
-        submitTxt.setOnClickListener(this);
-        cancelTxt = (TextView) findViewById(R.id.cancel);
-        cancelTxt.setOnClickListener(this);
+        mTitleTxt = (TextView) findViewById(R.id.title);
+        mSubmitTxt = (TextView) findViewById(R.id.submit);
+        mSubmitTxt.setOnClickListener(this);
+        mCancelTxt = (TextView) findViewById(R.id.cancel);
+        mCancelTxt.setOnClickListener(this);
         mSad = findViewById(R.id.sad);
         mSad.setOnClickListener(this);
         mSmile = findViewById(R.id.smile);
         mSmile.setOnClickListener(this);
 
-        mTypeTextView.start(content);
-        contentTxt.setText(content);
-        if (!TextUtils.isEmpty(positiveName)) {
-            submitTxt.setText(positiveName);
+        mTypeTextView.start(mContent);
+        mContentTxt.setText(mContent);
+        if (!TextUtils.isEmpty(mPositiveName)) {
+            mSubmitTxt.setText(mPositiveName);
         }
 
-        if (!TextUtils.isEmpty(negativeName)) {
-            cancelTxt.setText(negativeName);
+        if (!TextUtils.isEmpty(mNegativeName)) {
+            mCancelTxt.setText(mNegativeName);
         }
 
-        if (!TextUtils.isEmpty(title)) {
-            titleTxt.setText(title);
+        if (!TextUtils.isEmpty(mTitle)) {
+            mTitleTxt.setText(mTitle);
         }
         if (mImageId != 0) {
             mDialogLayout.setBackgroundResource(mImageId);
+        }
+
+        if (mResId == Constant.CONTENT_TEXT) {
+            mContentTxt.setVisibility(View.VISIBLE);
+            mPasswordInput.setVisibility(View.GONE);
+        } else if (mResId == Constant.PASSWORD_INPUT_ET) {
+            mContentTxt.setVisibility(View.GONE);
+            mPasswordInput.setVisibility(View.VISIBLE);
         }
 
     }
@@ -154,8 +175,8 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
                     }
                 }*/
 
-                if (listener != null) {
-                    listener.onClick(this, false);
+                if (mListener != null) {
+                    mListener.onClick(this, false);
                 }
                 break;
             case R.id.submit:
@@ -174,8 +195,8 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
                     submitTxt.startAnimation(scaleAnimation);
                     cancelTxt.startAnimation(scaleAnimation);
                 }*/
-                if (listener != null) {
-                    listener.onClick(this, true);
+                if (mListener != null) {
+                    mListener.onClick(this, true);
                 }
                 break;
             case R.id.smile:

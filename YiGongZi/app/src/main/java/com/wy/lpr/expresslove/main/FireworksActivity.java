@@ -1,9 +1,7 @@
 package com.wy.lpr.expresslove.main;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -12,8 +10,8 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.wy.lpr.expresslove.R;
+import com.wy.lpr.expresslove.app.MyApplication;
 import com.wy.lpr.expresslove.base.CommonAudioActivity;
-import com.wy.lpr.expresslove.main.photo.PhotoActivity;
 import com.wy.lpr.expresslove.utils.heart.HeartLayout;
 
 import java.util.Random;

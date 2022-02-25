@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.wy.lpr.expresslove.main.MyApplication;
 import com.wy.lpr.expresslove.utils.PlayAudioUtil;
 
 public class CommonAudioActivity extends AppCompatActivity {

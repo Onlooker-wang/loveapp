@@ -9,8 +9,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.wy.lpr.expresslove.R;
+import com.wy.lpr.expresslove.app.MyApplication;
 import com.wy.lpr.expresslove.base.CommonAudioActivity;
-import com.wy.lpr.expresslove.main.photo.PhotoActivity;
 import com.wy.lpr.expresslove.utils.Constant;
 import com.wy.lpr.expresslove.utils.RandomUtil;
 import com.wy.lpr.expresslove.utils.SharedPreferencesUtils;

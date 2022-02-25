@@ -14,6 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.wy.lpr.expresslove.R;
 import com.wy.lpr.expresslove.adapter.GuideViewPagerAdapter;
+import com.wy.lpr.expresslove.app.MyApplication;
 import com.wy.lpr.expresslove.base.CommonAudioActivity;
 import com.wy.lpr.expresslove.utils.SpUtils;
 
