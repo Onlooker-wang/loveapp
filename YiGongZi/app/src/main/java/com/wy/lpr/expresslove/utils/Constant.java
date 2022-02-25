@@ -9,4 +9,6 @@ public class Constant {
     public static final String REMEMBER_PASS = "RememberPass";
     public static final String LAST_USER_NAME = "LastUserName";
     public static final String LAST_PASS_WORD = "LastPassWord";
+    public static final int REQUEST_CODE = 0;
+    public static final String PASSWORD_POSITION = "PasswordPosition";
 }

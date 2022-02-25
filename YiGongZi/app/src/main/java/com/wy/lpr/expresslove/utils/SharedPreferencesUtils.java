@@ -21,6 +21,18 @@ public class SharedPreferencesUtils {
         return sp.getString(key, "");
     }
 
+    public static void putBoolean(Context context, String SPName, String key, boolean value) {
+        SharedPreferences sp = context.getSharedPreferences(SPName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(key, value);
+        editor.apply();
+    }
+
+    public static Boolean getBoolean(Context context, String SPName, String key) {
+        SharedPreferences sp = context.getSharedPreferences(SPName, Context.MODE_PRIVATE);
+        return sp.getBoolean(key, false);
+    }
+
     public static String[] getSharedPreferences(Context context, String SPName, String key) {
         String regularEx = "#";
         String[] str;

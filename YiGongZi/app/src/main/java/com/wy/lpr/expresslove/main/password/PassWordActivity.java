@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -37,6 +39,7 @@ public class PassWordActivity extends CommonAudioActivity {
 
         initView();
         initData();
+        setListener();
     }
 
     private void initView() {
@@ -44,7 +47,7 @@ public class PassWordActivity extends CommonAudioActivity {
         mUserPassList.setLayoutManager(new GridLayoutManager(mContext, 1));
         mPassWordAdapter = new PassWordAdapter(mContext);
         mUserPassList.setAdapter(mPassWordAdapter);
-
+        mPassWordAdapter.setAdapter(mPassWordAdapter);
     }
 
     private void initData() {
@@ -68,6 +71,18 @@ public class PassWordActivity extends CommonAudioActivity {
         }
 
 
+    }
+
+    private void setListener() {
+        mPassWordAdapter.setItemClickListener(new PassWordAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = getIntent();
+                intent.putExtra(Constant.PASSWORD_POSITION, position);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
     }
 
 

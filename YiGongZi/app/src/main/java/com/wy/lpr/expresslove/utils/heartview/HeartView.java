@@ -62,8 +62,10 @@ public class HeartView extends SurfaceView implements SurfaceHolder.Callback {
     //绘制列表里所有的花朵
     private void drawHeart() {
         canvas.drawRect(0, 0, width, height, backgroundPaint);
-        for (Bloom b : blooms) {
-            b.draw(canvas);
+        if (blooms != null) {
+            for (Bloom b : blooms) {
+                b.draw(canvas);
+            }
         }
         Canvas c = surfaceHolder.lockCanvas();
         if (c != null) {

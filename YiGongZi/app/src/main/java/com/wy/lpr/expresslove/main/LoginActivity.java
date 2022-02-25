@@ -11,13 +11,14 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.*;
 
 import com.wy.lpr.expresslove.R;
+import com.wy.lpr.expresslove.adapter.PopListAdapter;
 import com.wy.lpr.expresslove.main.password.PassWordActivity;
-import com.wy.lpr.expresslove.main.password.PassWordAdapter;
-import com.wy.lpr.expresslove.main.photo.PhotoActivity;
 import com.wy.lpr.expresslove.utils.CommomDialog;
 import com.wy.lpr.expresslove.utils.CommonFlashAnimationHelper;
 import com.wy.lpr.expresslove.utils.Constant;
@@ -32,7 +33,7 @@ import static com.wy.lpr.expresslove.main.MyApplication.getContext;
 /**
  * Created by xvshu on 2017/8/7.
  */
-public class LoginActivity extends Activity implements View.OnClickListener {
+public class LoginActivity extends Activity {
     private static final String TAG = "LoginActivity";
 
     private Context mContext;
@@ -43,8 +44,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private CheckBox mCbRememberPass = null;
     private CheckBox mCbAutoLogin = null;
     private SharedPreferences mSharedPreferences = null;
-    private ImageView mPassWordVisible;
+    private ImageView mDropList, mPassWordVisible;
     private TextView mForgetPass;
+    private LinearLayout mUserInputLayout;
+
+    private ListView mDropViewList;
+    private ListAdapter mListAdapter;
+    private PopupWindow mPopupWindow;
 
     private String mSpKeyUser = Constant.USER_NAME;
     private String mSpKeyPass = Constant.PASS_WORD;
@@ -63,7 +69,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.activity_login);
         mContext = MyApplication.getContext();
 
         initView();
@@ -73,7 +79,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     private void initView() {
         mLoginBtn = (ImageView) findViewById(R.id.loginBtn);
-        mLoginBtn.setOnClickListener(this);
+        mUserInputLayout = (LinearLayout) findViewById(R.id.user_input_layout);
         new Handler().post(new Runnable() {
             @Override
             public void run() {
@@ -92,6 +98,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         mPassWordVisible = (ImageView) findViewById(R.id.pass_word_visible);
         setPasswordVisible(false);
         mForgetPass = (TextView) findViewById(R.id.forget_pass);
+        mDropList = (ImageView) findViewById(R.id.drop_list);
     }
 
     private void initData() {
@@ -153,6 +160,24 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             }
         });
 
+        //用户下拉列表点击事件
+        mDropList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDropList.setBackgroundResource(R.drawable.input_up);
+                showPopupWindow();
+                //监听PopupWindow消失
+                if (mPopupWindow != null) {
+                    mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                        @Override
+                        public void onDismiss() {
+                            mDropList.setBackgroundResource(R.drawable.input_down);
+                        }
+                    });
+                }
+            }
+        });
+
         //密码可见的点击事件
         mPassWordVisible.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,7 +200,16 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, PassWordActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, Constant.REQUEST_CODE);
+                Log.i(TAG, "onClick: mForgetPass");
+            }
+        });
+
+        //登录
+        mLoginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userLogin();
             }
         });
     }
@@ -204,8 +238,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    @Override
-    public void onClick(View v) {
+    private void userLogin() {
         mCurrentUserId = mUserIdEt.getText().toString().trim();
         mCurrentPassWord = mPassEt.getText().toString().trim();
         if (mCurrentUserId.equals("")) {
@@ -248,7 +281,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             for (int i = 0; i < mUserNameList.size(); i++) {
                 if (mUserNameList.get(i).equals(mCurrentUserId)) {
                     if (mPassWordList.get(i).equals(mCurrentPassWord)) {
-                        Toast.makeText(this, "登录成功！", Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, "登录成功！", Toast.LENGTH_LONG).show();
                         ifRememberPass();
                         SharedPreferencesUtils.putString(mContext, Constant.USER_INFO_SP, Constant.CURRENT_USER_NAME, mCurrentUserId);
                         Intent intent = new Intent(LoginActivity.this, DrawHeartActivity.class);
@@ -257,12 +290,67 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(this, "密码不正确", Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, "密码不正确", Toast.LENGTH_LONG).show();
                     }
                     return;
                 }
 
             }
+        }
+    }
+
+
+    /**
+     * 显示下拉列表的popupWindow弹框
+     */
+    @SuppressWarnings("deprecation")
+    private void showPopupWindow() {
+        View contentView = LayoutInflater.from(LoginActivity.this).inflate(
+                R.layout.popup_list, null);
+        mDropViewList = (ListView) contentView.findViewById(R.id.dropview_list);
+        mListAdapter = new PopListAdapter(mContext, mUserNameList);
+        mDropViewList.setAdapter(mListAdapter);
+        mDropViewList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View view, int position,
+                                    long arg3) {
+                mUserIdEt.setText(mUserNameList.get(position));
+                mUserIdEt.setSelection(mUserNameList.get(position).length());
+                mPassEt.setText(mPassWordList.get(position));
+                mPassEt.setSelection(mPassWordList.get(position).length());
+                mPopupWindow.dismiss();
+            }
+        });
+        mPopupWindow = new PopupWindow(contentView,
+                mUserInputLayout.getWidth(),mUserInputLayout.getHeight()*3 , true);
+        mPopupWindow.setOutsideTouchable(true);
+
+        mPopupWindow.setTouchable(true);
+        mPopupWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View arg0, MotionEvent arg1) {
+                // 这里如果返回true的话，touch事件将被拦截
+                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
+                return false;
+            }
+        });
+        //如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
+        mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.pop_background));
+        // 设置好参数之后再show
+        mPopupWindow.showAsDropDown(mUserInputLayout, 0, 30);
+        mPopupWindow.setAnimationStyle(R.style.PopUpAnimation);
+    }
+
+    //从密码表返回结果
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constant.REQUEST_CODE && resultCode == RESULT_OK) {
+            int position = data.getIntExtra(Constant.PASSWORD_POSITION, 0);
+            mUserIdEt.setText(mUserNameList.get(position));
+            mUserIdEt.setSelection(mUserNameList.get(position).length());
+            mPassEt.setText(mPassWordList.get(position));
+            mPassEt.setSelection(mPassWordList.get(position).length());
         }
     }
 

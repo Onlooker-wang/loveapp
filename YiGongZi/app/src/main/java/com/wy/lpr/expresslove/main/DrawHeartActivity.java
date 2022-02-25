@@ -151,7 +151,6 @@ public class DrawHeartActivity extends CommonAudioActivity {
     }
 
     private void initData() {
-        mHeartView.reDraw();
         initWebView(mWebViewTop, "file:///android_asset/index.html");
         initWebView(mWebViewBottom, "file:///android_asset/index2.html");
     }

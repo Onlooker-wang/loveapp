@@ -253,12 +253,17 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
                     mPathList.remove(position);
                     //删除图片原路径
                     mOriginPathList.remove(position);
+                    Log.i(TAG, "onAddPicClick: mPathList = " + mPathList + ",mOriginPathList = " + mOriginPathList);
                     mPhotoAdapter.notifyItemRemoved(position);
                     //将更新后的路径保存到本地SP
                     String[] path = (String[]) mPathList.toArray(new String[0]);
                     SharedPreferencesUtils.setSharedPreferences(mContext, mCurrentUserName, "ImagePath", path);
                     String[] originPath = (String[]) mOriginPathList.toArray(new String[0]);
                     SharedPreferencesUtils.setSharedPreferences(mContext, mCurrentUserName, "OriginPath", originPath);
+                    Log.i(TAG, "onAddPicClick: path = " + Arrays.toString(path) + ",originPath = " + Arrays.toString(originPath));
+                    Log.i(TAG, "onAddPicClick SharedPreferences: mPathList = " +
+                            Arrays.toString(SharedPreferencesUtils.getSharedPreferences(mContext, mCurrentUserName, "ImagePath"))
+                    + ",mOriginPathList = " + Arrays.toString(SharedPreferencesUtils.getSharedPreferences(mContext, mCurrentUserName, "OriginPath")));
                     break;
             }
         }
@@ -317,6 +322,7 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
             list.add(bean);
         }
         final MenuPopWindow pw = new MenuPopWindow(this, list);
+        pw.setOutsideTouchable(true);
         pw.setOnItemClick(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -334,6 +340,7 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
                         pw.dismiss();
                         break;
                     case 2:
+                        SharedPreferencesUtils.putBoolean(mContext, Constant.USER_INFO_SP, Constant.AUTO_LOGIN, false);
                         startActivity(new Intent(PhotoActivity.this, LoginActivity.class));
                         finish();
                 }

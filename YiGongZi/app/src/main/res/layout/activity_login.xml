@@ -24,7 +24,8 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/user_input_layout"
+            android:layout_width="match_parent"
             android:layout_height="44dp"
             android:background="@drawable/input_edit_background"
             android:gravity="center_vertical"
@@ -42,12 +43,12 @@
                 android:imeOptions="actionDone"
                 android:textSize="16sp" />
 
-            <Button
-                android:id="@+id/button_bar"
+            <ImageView
+                android:id="@+id/drop_list"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginLeft="1dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/input_down" />
 
         </LinearLayout>
@@ -59,8 +60,7 @@
             android:layout_marginRight="1dp" />
 
         <LinearLayout
-
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/input_edit_background"
             android:gravity="center_vertical"
