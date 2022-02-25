@@ -55,6 +55,10 @@ public class SharedPreferencesUtils {
             SharedPreferences.Editor editor = sp.edit();
             editor.putString(key, str);
             editor.apply();
+        } else {
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString(key, str);
+            editor.apply();
         }
     }
 

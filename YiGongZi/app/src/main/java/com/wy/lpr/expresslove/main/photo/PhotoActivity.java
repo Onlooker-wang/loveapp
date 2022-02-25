@@ -263,7 +263,7 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
                     Log.i(TAG, "onAddPicClick: path = " + Arrays.toString(path) + ",originPath = " + Arrays.toString(originPath));
                     Log.i(TAG, "onAddPicClick SharedPreferences: mPathList = " +
                             Arrays.toString(SharedPreferencesUtils.getSharedPreferences(mContext, mCurrentUserName, "ImagePath"))
-                    + ",mOriginPathList = " + Arrays.toString(SharedPreferencesUtils.getSharedPreferences(mContext, mCurrentUserName, "OriginPath")));
+                            + ",mOriginPathList = " + Arrays.toString(SharedPreferencesUtils.getSharedPreferences(mContext, mCurrentUserName, "OriginPath")));
                     break;
             }
         }
