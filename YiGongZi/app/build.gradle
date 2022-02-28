@@ -13,10 +13,24 @@ android {
             abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
         }
     }
+
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
     lintOptions {
         checkReleaseBuilds false
         abortOnError false
     }
+
+    // 自定义打包名称
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "YiGongZi${variant.versionName}.apk"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -30,11 +44,13 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.android.support:support-annotations:28.0.0'
     implementation 'com.android.support:design:25.3.0'
+    //状态栏
+    implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     //glide图片加载
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     //Logger打印
     implementation 'com.orhanobut:logger:1.15'
-    //recycelerView 适配器
+    //RecyclerView最好的适配器，让你的适配器一目了然，告别代码冗余
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.14'
     //仿iOS的AlertViewController
     implementation 'com.bigkoo:alertview:1.0.3'

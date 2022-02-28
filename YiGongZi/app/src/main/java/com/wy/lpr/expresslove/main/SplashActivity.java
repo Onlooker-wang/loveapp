@@ -15,6 +15,7 @@ import com.wy.lpr.expresslove.utils.Constant;
 import com.wy.lpr.expresslove.utils.RandomUtil;
 import com.wy.lpr.expresslove.utils.SharedPreferencesUtils;
 import com.wy.lpr.expresslove.utils.SpUtils;
+import com.wy.lpr.expresslove.utils.StatusBarUtil;
 import com.wy.lpr.expresslove.utils.textstyle.ShapeRevealLoopSample;
 
 import java.util.Arrays;
@@ -49,6 +50,7 @@ public class SplashActivity extends CommonAudioActivity {
             return;
         }*/
 
+        StatusBarUtil.StatusBarLightMode(this);
         mContext = MyApplication.getContext();
         mUserName = SharedPreferencesUtils.getSharedPreferences(mContext, Constant.USER_INFO_SP, Constant.USER_NAME);
         int count = mUserName.length;

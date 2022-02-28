@@ -19,11 +19,13 @@ import android.widget.*;
 import com.wy.lpr.expresslove.R;
 import com.wy.lpr.expresslove.adapter.PopListAdapter;
 import com.wy.lpr.expresslove.app.MyApplication;
+import com.wy.lpr.expresslove.base.CommonAudioActivity;
 import com.wy.lpr.expresslove.main.password.PassWordActivity;
 import com.wy.lpr.expresslove.utils.CommomDialog;
 import com.wy.lpr.expresslove.utils.CommonFlashAnimationHelper;
 import com.wy.lpr.expresslove.utils.Constant;
 import com.wy.lpr.expresslove.utils.SharedPreferencesUtils;
+import com.wy.lpr.expresslove.utils.StatusBarUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,7 @@ import static com.wy.lpr.expresslove.app.MyApplication.getContext;
 /**
  * Created by xvshu on 2017/8/7.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends CommonAudioActivity {
     private static final String TAG = "LoginActivity";
 
     private Context mContext;
@@ -71,6 +73,8 @@ public class LoginActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StatusBarUtil.StatusBarLightMode(this);
+
         setContentView(R.layout.activity_login);
         mContext = MyApplication.getContext();
 
@@ -202,7 +206,7 @@ public class LoginActivity extends Activity {
         mForgetPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPassForCheck = SharedPreferencesUtils.getString(mContext, Constant.USER_INFO_SP, Constant.PASSWORD_FOR_CHECK_PASS);
+                mPassForCheck = SharedPreferencesUtils.getString(mContext, Constant.USER_INFO_SP, Constant.PASSWORD_FOR_CHECK_PASS, "");
 
                 if (mPassForCheck.equals("")) {
                     popSetPasswordDialog();
@@ -360,10 +364,12 @@ public class LoginActivity extends Activity {
         mCurrentPassWord = mPassEt.getText().toString().trim();
         if (mCurrentUserId.equals("")) {
             mPromptText.setText("用户名为空");
+            setPromptTextNull();
             return;
         }
         if (mCurrentPassWord.equals("")) {
             mPromptText.setText("密码为空");
+            setPromptTextNull();
             return;
         }
 
@@ -374,6 +380,16 @@ public class LoginActivity extends Activity {
         }
     }
 
+    //设置提示信息为空
+    private void setPromptTextNull() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!mPromptText.getText().toString().equals(""))
+                    mPromptText.setText("");
+            }
+        }, 2000);
+    }
 
     /**
      * 显示下拉列表的popupWindow弹框

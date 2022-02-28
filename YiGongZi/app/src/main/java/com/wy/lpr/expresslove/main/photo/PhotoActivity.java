@@ -49,6 +49,7 @@ import com.wy.lpr.expresslove.R;
 import com.wy.lpr.expresslove.base.CommonAudioActivity;
 import com.wy.lpr.expresslove.main.FireworksActivity;
 import com.wy.lpr.expresslove.main.LoginActivity;
+import com.wy.lpr.expresslove.music.MusicActivity;
 import com.wy.lpr.expresslove.utils.Constant;
 import com.wy.lpr.expresslove.utils.SharedPreferencesUtils;
 import com.wy.lpr.expresslove.utils.heart.HeartLayout;
@@ -93,7 +94,7 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
     private RecyclerView mRecyclerView;
     private PhotoAdapter mPhotoAdapter;
     private HeartLayout mHeartLayout;//垂直方向的漂浮的红心
-    private ImageView mMoreIv;
+    private ImageView mPhotoBack, mMoreIv;
 
     private List<TImage> mSelectMedia = new ArrayList<>();
     private List<TImage> mAllImageForDelete = new ArrayList<>();
@@ -124,8 +125,15 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
     private void initView() {
         mHeartLayout = (HeartLayout) findViewById(R.id.heart_o_red_layout);
         //showRedHeartLayout();
-        mCurrentUserName = SharedPreferencesUtils.getString(mContext, Constant.USER_INFO_SP, Constant.CURRENT_USER_NAME);
+        mCurrentUserName = SharedPreferencesUtils.getString(mContext, Constant.USER_INFO_SP, Constant.CURRENT_USER_NAME, "");
         Log.i(TAG, "initView mCurrentUserName: " + mCurrentUserName);
+        mPhotoBack = (ImageView) findViewById(R.id.photo_back);
+        mPhotoBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         mMoreIv = (ImageView) findViewById(R.id.more_iv);
         mMoreIv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -311,8 +319,8 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
     }
 
     private void setMoreListener() {
-        int[] icons = {R.drawable.fire, R.drawable.ic_delete, R.drawable.loginout};
-        String[] texts = {"烟花表演", "全部删除", "退出登录"};
+        int[] icons = {R.drawable.fire, R.drawable.music_icon, R.drawable.ic_delete, R.drawable.loginout};
+        String[] texts = {"烟花表演", "本地音乐", "全部删除", "退出登录"};
         List<MenuPopWindowBean> list = new ArrayList<>();
         MenuPopWindowBean bean;
         for (int i = 0; i < icons.length; i++) {
@@ -336,13 +344,18 @@ public class PhotoActivity extends CommonAudioActivity implements TakePhoto.Take
                         pw.dismiss();
                         break;
                     case 1:
-                        deleteAllPic();
+                        startActivity(new Intent(PhotoActivity.this, MusicActivity.class));
                         pw.dismiss();
                         break;
                     case 2:
+                        deleteAllPic();
+                        pw.dismiss();
+                        break;
+                    case 3:
                         SharedPreferencesUtils.putBoolean(mContext, Constant.USER_INFO_SP, Constant.AUTO_LOGIN, false);
                         startActivity(new Intent(PhotoActivity.this, LoginActivity.class));
                         finish();
+                        break;
                 }
             }
 

@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_bg1">
+    android:background="@drawable/login_bg1"
+    android:fitsSystemWindows="true">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:visibility="gone"
+        app:contentInsetLeft="@dimen/activity_horizontal_margin"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/common_black"
+            android:textSize="18sp" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <ImageView
         android:id="@+id/loginIcon"
@@ -113,6 +132,16 @@
         android:textColor="@color/black" />
 
     <TextView
+        android:id="@+id/promptText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cb_rememberpass"
+        android:layout_centerHorizontal="true"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <TextView
         android:id="@+id/forget_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -128,16 +157,5 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/cb_autologin"
         android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:id="@+id/promptText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/loginBtn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:text=""
-        android:textColor="#ff0000"
-        android:textSize="18sp" />
 
 </RelativeLayout>

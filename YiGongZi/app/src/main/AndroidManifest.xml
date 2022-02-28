@@ -18,7 +18,8 @@
         android:icon="@mipmap/blue_ocean"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".music.MusicActivity" />
 
         <meta-data
             android:name="android.max_aspect"

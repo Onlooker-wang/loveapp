@@ -16,9 +16,9 @@ public class SharedPreferencesUtils {
         editor.apply();
     }
 
-    public static String getString(Context context, String SPName, String key) {
+    public static String getString(Context context, String SPName, String key, String defValue) {
         SharedPreferences sp = context.getSharedPreferences(SPName, Context.MODE_PRIVATE);
-        return sp.getString(key, "");
+        return sp.getString(key, defValue);
     }
 
     public static void putBoolean(Context context, String SPName, String key, boolean value) {
@@ -67,5 +67,11 @@ public class SharedPreferencesUtils {
         SharedPreferences.Editor editor = sp.edit();
         editor.clear();
         editor.apply();
+    }
+
+    public static void remove(Context context, String SPName, String key) {
+        SharedPreferences sp = context.getSharedPreferences(SPName,
+                Context.MODE_PRIVATE);
+        sp.edit().remove(key).apply();
     }
 }
