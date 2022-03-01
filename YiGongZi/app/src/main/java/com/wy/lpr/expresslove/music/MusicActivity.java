@@ -26,6 +26,7 @@ import com.wy.lpr.expresslove.app.MyApplication;
 import com.wy.lpr.expresslove.base.CommonAudioActivity;
 import com.wy.lpr.expresslove.bean.Song;
 import com.wy.lpr.expresslove.utils.Constant;
+import com.wy.lpr.expresslove.utils.ImageUtils;
 import com.wy.lpr.expresslove.utils.MusicUtils;
 import com.wy.lpr.expresslove.utils.ObjectUtils;
 import com.wy.lpr.expresslove.utils.SharedPreferencesUtils;
@@ -41,6 +42,8 @@ import static com.wy.lpr.expresslove.utils.DateUtil.parseTime;
 public class MusicActivity extends CommonAudioActivity {
     private static final String TAG = "MusicActivity";
 
+
+    private LinearLayout mMusicLayout;
     //音乐列表
     private RecyclerView mRvMusic;
     //扫描按钮
@@ -106,6 +109,7 @@ public class MusicActivity extends CommonAudioActivity {
     }
 
     private void initView() {
+        mMusicLayout = (LinearLayout) findViewById(R.id.music_lay);
         mRvMusic = (RecyclerView) findViewById(R.id.rv_music);
         mBtnScan = (Button) findViewById(R.id.btn_scan);
         mScanLay = (LinearLayout) findViewById(R.id.scan_lay);
@@ -124,6 +128,8 @@ public class MusicActivity extends CommonAudioActivity {
         mRxPermissions = new RxPermissions(this);
         mMusicData = SharedPreferencesUtils.getString(mContext, Constant.MUSIC_DATA_SP, Constant.MUSIC_DATA_FIRST, "yes");
 
+        //从drawable中随机获取一张图片设置为背景
+        mMusicLayout.setBackgroundResource(ImageUtils.getImageRes(8));
         if (mMusicData.equals("yes")) {//说明是第一次打开APP，未进行扫描
             mScanLay.setVisibility(View.VISIBLE);
         } else {

@@ -8,6 +8,9 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.util.Log;
+
+import com.wy.lpr.expresslove.app.MyApplication;
 
 import java.io.File;
 import java.io.IOException;
@@ -101,9 +104,9 @@ public class ImageUtils {
         }
         //Log.d(TAG,"w:"+bitmap.getWidth()+" h:"+bitmap.getHeight());
         if (bitmap != null) {
-            try{
+            try {
                 bitmap = Bitmap.createScaledBitmap(bitmap, reqWidth, reqHeight, true);
-            }catch (OutOfMemoryError outOfMemoryError){
+            } catch (OutOfMemoryError outOfMemoryError) {
                 outOfMemoryError.printStackTrace();
                 System.gc();
                 return null;
@@ -239,5 +242,15 @@ public class ImageUtils {
             return bitmap.getByteCount();
         }
         return bitmap.getRowBytes() * bitmap.getHeight(); // earlier version
+    }
+
+    //从drawable中随机获取图片
+    public static int getImageRes(int length) {
+        int imgIndex = RandomUtil.random(length) + 1;
+        String imgName = "music_bg" + imgIndex;
+        int resId = MyApplication.getContext().
+                getResources().getIdentifier(imgName, "drawable", "com.wy.lpr.expresslove");
+        Log.i(TAG, "getImageRes: " + resId);
+        return resId;
     }
 }
