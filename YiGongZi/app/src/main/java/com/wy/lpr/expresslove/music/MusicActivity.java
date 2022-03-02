@@ -24,6 +24,7 @@ import com.tbruyelle.rxpermissions.RxPermissions;
 import com.wy.lpr.expresslove.R;
 import com.wy.lpr.expresslove.app.MyApplication;
 import com.wy.lpr.expresslove.base.CommonAudioActivity;
+import com.wy.lpr.expresslove.bean.SingleMediaPlayer;
 import com.wy.lpr.expresslove.bean.Song;
 import com.wy.lpr.expresslove.utils.Constant;
 import com.wy.lpr.expresslove.utils.ImageUtils;
@@ -41,7 +42,10 @@ import static com.wy.lpr.expresslove.utils.DateUtil.parseTime;
 
 public class MusicActivity extends CommonAudioActivity {
     private static final String TAG = "MusicActivity";
-
+    private static final int INTERNAL_TIME = 1000;// 音乐进度间隔时间
+    private static final int PROGRESS_MSG = 0;//更新进度条的消息
+    private static final int BACKGROUND_MSG = 1;//更新背景图片的消息
+    private static final int UPDATE_BG_TIME = 4000;//更新背景间隔时间
 
     private LinearLayout mMusicLayout;
     //音乐列表
@@ -81,19 +85,29 @@ public class MusicActivity extends CommonAudioActivity {
     private String mMusicData = null;
     // 记录当前播放歌曲的位置
     public int mCurrentPosition;
-    private static final int INTERNAL_TIME = 1000;// 音乐进度间隔时间
     private Context mContext;
+    private int mAppOpen;
 
 
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
-            // 展示给进度条和当前时间
-            int progress = mMediaPlayer.getCurrentPosition();
-            mTimeSeekBar.setProgress(progress);
-            mTvPlayTime.setText(parseTime(progress));
-            // 继续定时发送数据
-            updateProgress();
+            switch (message.arg1) {
+                case PROGRESS_MSG:
+                    // 展示给进度条和当前时间
+                    int progress = mMediaPlayer.getCurrentPosition();
+                    mTimeSeekBar.setProgress(progress);
+                    mTvPlayTime.setText(parseTime(progress));
+                    // 继续定时发送数据
+                    updateProgress();
+                    break;
+                case BACKGROUND_MSG:
+                    //每4秒更新背景图片
+                    mMusicLayout.setBackgroundResource(ImageUtils.updateImgRes());
+                    updateMusicBg();
+                    break;
+            }
+
             return true;
         }
     });
@@ -106,6 +120,62 @@ public class MusicActivity extends CommonAudioActivity {
         mContext = MyApplication.getContext();
         initView();
         setListener();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mMediaPlayer != null) {
+            if (mMediaPlayer.isPlaying()) {
+                setMediaCompletion();
+                mTimeSeekBar.setMax(mMediaPlayer.getDuration());
+                mTimeSeekBar.setProgress(mMediaPlayer.getCurrentPosition());
+                mTvPlayTime.setText(parseTime(mMediaPlayer.getCurrentPosition()));
+                mTvTotalTime.setText(parseTime(mMediaPlayer.getDuration()));
+                mBtnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_play));
+                mPlayStateImg.setBackground(getResources().getDrawable(R.mipmap.list_pause_state));
+                mTvPlaySongInfo.setText("歌名： " + mList.get(mCurrentPosition).song +
+                        "  歌手： " + mList.get(mCurrentPosition).singer);
+
+                mTvPlaySongInfo.setSelected(true);//跑马灯效果
+                mPlayStateLay.setVisibility(View.VISIBLE);
+                // 继续定时发送数据
+                updateProgress();
+            } else {
+                if (mAppOpen == 1) {
+                    mCurrentPosition = -1;
+                    SharedPreferencesUtils.putInt(mContext, Constant.MUSIC_DATA_SP, Constant.APP_OPEN, 0);
+                }
+                if (mCurrentPosition != -1) {
+                    int seekBarPosition = SharedPreferencesUtils.getInt(mContext, Constant.MUSIC_DATA_SP, Constant.MUSIC_SEEK_BAR_POSITION, 0);
+                    int duration = SharedPreferencesUtils.getInt(mContext, Constant.MUSIC_DATA_SP, Constant.MUSIC_DURATION, 0);
+                    mTimeSeekBar.setMax(duration);
+                    mTimeSeekBar.setProgress(seekBarPosition);
+                    mTvPlayTime.setText(parseTime(seekBarPosition));
+                    mTvTotalTime.setText(parseTime(duration));
+                    mBtnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_pause));
+                    mPlayStateImg.setBackground(getResources().getDrawable(R.mipmap.list_play_state));
+                    mTvPlaySongInfo.setText("歌名： " + mList.get(mCurrentPosition).song +
+                            "  歌手： " + mList.get(mCurrentPosition).singer);
+
+                    mTvPlaySongInfo.setSelected(true);//跑马灯效果
+                    mPlayStateLay.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mMediaPlayer != null) {
+            if (mCurrentPosition != -1) {
+                SharedPreferencesUtils.putInt(mContext, Constant.MUSIC_DATA_SP, Constant.MUSIC_SEEK_BAR_POSITION, mMediaPlayer.getCurrentPosition());
+                SharedPreferencesUtils.putInt(mContext, Constant.MUSIC_DATA_SP, Constant.MUSIC_DURATION, mMediaPlayer.getDuration());
+            }
+        }
     }
 
     private void initView() {
@@ -127,9 +197,14 @@ public class MusicActivity extends CommonAudioActivity {
         mPlayStateLay = (LinearLayout) findViewById(R.id.play_state_lay);
         mRxPermissions = new RxPermissions(this);
         mMusicData = SharedPreferencesUtils.getString(mContext, Constant.MUSIC_DATA_SP, Constant.MUSIC_DATA_FIRST, "yes");
-
+        mCurrentPosition = SharedPreferencesUtils.getInt(mContext, Constant.MUSIC_DATA_SP, Constant.MUSIC_CURRENT_ITEM_POSITION, -1);
+        mAppOpen = SharedPreferencesUtils.getInt(mContext, Constant.MUSIC_DATA_SP, Constant.APP_OPEN, 1);
+        mMediaPlayer = SingleMediaPlayer.getINSTANCE();
         //从drawable中随机获取一张图片设置为背景
         mMusicLayout.setBackgroundResource(ImageUtils.getImageRes(8));
+        //2秒后更新背景
+        updateMusicBg();
+
         if (mMusicData.equals("yes")) {//说明是第一次打开APP，未进行扫描
             mScanLay.setVisibility(View.VISIBLE);
         } else {
@@ -150,15 +225,7 @@ public class MusicActivity extends CommonAudioActivity {
                 mToolbar.setBackgroundColor(getResources().getColor(R.color.white));
                 mTvTitle.setTextColor(getResources().getColor(R.color.black));
                 mTvClearList.setTextColor(getResources().getColor(R.color.black));
-                if (mMediaPlayer == null) {
-                    mMediaPlayer = new MediaPlayer();
-                    mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mp) {
-                            changeMusic(++mCurrentPosition);
-                        }
-                    });//监听音乐播放完毕事件，自动下一曲
-                }
+                setMediaCompletion();//监听音乐播放完毕事件，自动下一曲
                 if (mMediaPlayer.isPlaying()) {
                     mMediaPlayer.pause();
                     mMediaPlayer.reset();
@@ -187,9 +254,10 @@ public class MusicActivity extends CommonAudioActivity {
             @Override
             public void onClick(View v) {
                 // 首次点击播放按钮，默认播放第0首，下标从0开始
-                if (mMediaPlayer == null) {
+                if (mCurrentPosition == -1) {
                     changeMusic(0);
                 } else {
+                    setMediaCompletion();
                     if (mMediaPlayer.isPlaying()) {
                         mMediaPlayer.pause();
                         mBtnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_pause));
@@ -200,6 +268,7 @@ public class MusicActivity extends CommonAudioActivity {
 //                        tvPlaySongInfo.setCompoundDrawables(leftImg, null, null, null);
                     } else {
                         mMediaPlayer.start();
+                        updateProgress();
                         mBtnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_play));
                         mPlayStateImg.setBackground(getResources().getDrawable(R.mipmap.list_pause_state));
                     }
@@ -253,7 +322,7 @@ public class MusicActivity extends CommonAudioActivity {
 
         //数据赋值
         mList = MusicUtils.getMusicData(this);//将扫描到的音乐赋值给音乐列表
-        if (!ObjectUtils.isEmpty(mList) && mList != null) {
+        if (!ObjectUtils.isEmpty(mList)) {
             mScanLay.setVisibility(View.GONE);
             SharedPreferencesUtils.putString(mContext, Constant.MUSIC_DATA_SP, Constant.MUSIC_DATA_FIRST, "no");
         }
@@ -274,6 +343,7 @@ public class MusicActivity extends CommonAudioActivity {
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 if (view.getId() == R.id.item_music) {
                     mCurrentPosition = position;
+                    SharedPreferencesUtils.putInt(mContext, Constant.MUSIC_DATA_SP, Constant.MUSIC_CURRENT_ITEM_POSITION, mCurrentPosition);
                     changeMusic(mCurrentPosition);
 //                    mAdapter.notifyItemRangeChanged(0, mList.size());
 
@@ -291,17 +361,12 @@ public class MusicActivity extends CommonAudioActivity {
             Log.e("MainActivity", "mList.size:" + mList.size());
         } else if (position > mList.size() - 1) {
             mCurrentPosition = position = 0;
+        } else if (position == 0) {
+            mCurrentPosition = position;
         }
+        SharedPreferencesUtils.putInt(mContext, Constant.MUSIC_DATA_SP, Constant.MUSIC_CURRENT_ITEM_POSITION, mCurrentPosition);
         Log.e("MainActivity", "position:" + position);
-        if (mMediaPlayer == null) {
-            mMediaPlayer = new MediaPlayer();
-            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    changeMusic(++mCurrentPosition);
-                }
-            });//监听音乐播放完毕事件，自动下一曲
-        }
+        setMediaCompletion();//监听音乐播放完毕事件，自动下一曲
 
         try {
             // 切歌之前先重置，释放掉之前的资源
@@ -325,8 +390,8 @@ public class MusicActivity extends CommonAudioActivity {
         }
 
         // 切歌时重置进度条并展示歌曲时长
-        mTimeSeekBar.setProgress(0);
         mTimeSeekBar.setMax(mMediaPlayer.getDuration());
+        mTimeSeekBar.setProgress(0);
         mTvTotalTime.setText(parseTime(mMediaPlayer.getDuration()));
 
         updateProgress();
@@ -339,13 +404,28 @@ public class MusicActivity extends CommonAudioActivity {
         }
     }
 
+    //监听音乐播放完毕事件，自动下一曲
+    private void setMediaCompletion() {
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                changeMusic(++mCurrentPosition);
+            }
+        });
+    }
+
     private void updateProgress() {
         // 使用Handler每间隔1s发送一次空消息，通知进度条更新
         Message msg = Message.obtain();// 获取一个现成的消息
-        // 使用MediaPlayer获取当前播放时间除以总时间的进度
-        int progress = mMediaPlayer.getCurrentPosition();
-        msg.arg1 = progress;
+        msg.arg1 = PROGRESS_MSG;
         mHandler.sendMessageDelayed(msg, INTERNAL_TIME);
+    }
+
+    private void updateMusicBg() {
+        // 使用Handler每间隔4s发送一次空消息，通知背景更新图片
+        Message msg = Message.obtain();// 获取一个现成的消息
+        msg.arg1 = BACKGROUND_MSG;
+        mHandler.sendMessageDelayed(msg, UPDATE_BG_TIME);
     }
 
 }

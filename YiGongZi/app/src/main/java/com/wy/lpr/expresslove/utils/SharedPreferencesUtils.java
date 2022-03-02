@@ -9,6 +9,26 @@ import android.content.SharedPreferences;
 
 public class SharedPreferencesUtils {
 
+    public static int getInt(Context context, String SPName, String strKey) {
+        SharedPreferences sp = context.getSharedPreferences(
+                SPName, Context.MODE_PRIVATE);
+        return sp.getInt(strKey, -1);
+    }
+
+    public static int getInt(Context context, String SPName, String strKey, int defData) {
+        SharedPreferences sp = context.getSharedPreferences(
+                SPName, Context.MODE_PRIVATE);
+        return sp.getInt(strKey, defData);
+    }
+
+    public static void putInt(Context context, String SPName, String strKey, int data) {
+        SharedPreferences sp = context.getSharedPreferences(
+                SPName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt(strKey, data);
+        editor.apply();
+    }
+
     public static void putString(Context context, String SPName, String key, String content) {
         SharedPreferences sp = context.getSharedPreferences(SPName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();

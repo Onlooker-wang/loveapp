@@ -1,9 +1,9 @@
 {
   "update": "Yes",
-  "new_version": "0.2.0",
-  "apk_file_url": "https://raw.githubusercontent.com/Onlooker-wang/loveapp/main/extras/app-release.apk",
-  "update_log": "1，修复查看大图时左右滑动黑屏的bug。\r\n2，新增删除全部图片的功能。",
-  "target_size": "23M",
-  "new_md5":"BC79143FD985F2FC456435AA1D12FF23",
+  "new_version": "0.2.1",
+  "apk_file_url": "https://raw.githubusercontent.com/Onlooker-wang/loveapp/main/extras/YiGongZi-0.2.1.apk",
+  "update_log": "1，新增本地音乐播放功能。\r\n2，修复已知bug",
+  "target_size": "46M",
+  "new_md5":"E4CCBEDFE5D1599F3399A2738DF9EB9B",
   "constraint": false
 }

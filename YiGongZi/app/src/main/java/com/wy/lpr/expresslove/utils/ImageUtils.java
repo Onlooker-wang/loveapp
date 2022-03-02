@@ -28,6 +28,8 @@ public class ImageUtils {
 
     private static final String TAG = ImageUtils.class.getSimpleName();
 
+    private static int mImgIndex;
+
     /**
      * 从assets文件夹中获取制定路径的图片的Bitmap
      *
@@ -246,11 +248,29 @@ public class ImageUtils {
 
     //从drawable中随机获取图片
     public static int getImageRes(int length) {
-        int imgIndex = RandomUtil.random(length) + 1;
-        String imgName = "music_bg" + imgIndex;
+        mImgIndex = RandomUtil.random(length) + 1;
+        String imgName = "music_bg" + mImgIndex;
         int resId = MyApplication.getContext().
                 getResources().getIdentifier(imgName, "drawable", "com.wy.lpr.expresslove");
         Log.i(TAG, "getImageRes: " + resId);
         return resId;
     }
+
+    //从上面随机选中的图片开始往后依次更新图片
+    public static int updateImgRes() {
+        int imgIndex;
+        if (mImgIndex == 8) {
+            imgIndex = 1;
+            mImgIndex = 1;
+        } else {
+            imgIndex = mImgIndex + 1;
+            mImgIndex++;
+        }
+        String imgName = "music_bg" + imgIndex;
+        int resId = MyApplication.getContext().
+                getResources().getIdentifier(imgName, "drawable", "com.wy.lpr.expresslove");
+        Log.i(TAG, "updateImgRes: " + resId);
+        return resId;
+    }
+
 }

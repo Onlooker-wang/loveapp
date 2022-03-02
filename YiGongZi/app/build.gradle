@@ -7,7 +7,7 @@ android {
         minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
-        versionName "0.2.0"
+        versionName "0.2.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
@@ -27,7 +27,7 @@ android {
     // 自定义打包名称
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "YiGongZi${variant.versionName}.apk"
+            outputFileName = "YiGongZi-${variant.versionName}.apk"
         }
     }
 

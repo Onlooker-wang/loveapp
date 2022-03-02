@@ -5,6 +5,8 @@ public class Constant {
     public static final int CONTENT_TEXT = 1;
     public static final int PASSWORD_INPUT_ET = 2;
 
+    public static final String APP_OPEN = "AppOpen";
+
     public static final String CURRENT_USER_NAME = "current_user_name";
     public static final String USER_INFO_SP = "userInfo";
     public static final String USER_NAME = "UserName";
@@ -18,4 +20,7 @@ public class Constant {
 
     public static final String MUSIC_DATA_SP = "MusicDataSp";
     public static final String MUSIC_DATA_FIRST = "MusicDataFirst";
+    public static final String MUSIC_CURRENT_ITEM_POSITION = "MusicCurrentPosition";
+    public static final String MUSIC_SEEK_BAR_POSITION = "MusicSeekBarPosition";
+    public static final String MUSIC_DURATION = "MusicDuration";
 }
