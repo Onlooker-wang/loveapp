@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.lzy.okgo.OkGo;
 import com.tencent.smtt.sdk.QbSdk;
+import com.wy.lpr.expresslove.utils.Constant;
 import com.wy.lpr.expresslove.utils.SharedPreferencesUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -31,6 +32,8 @@ public class MyApplication extends Application {
 
         OkGo.getInstance().init(this);
         //getImagesFromUrl();
+        //设置应用开启时的标志位
+        SharedPreferencesUtils.putInt(mContext, Constant.MUSIC_DATA_SP, Constant.APP_OPEN, 1);
     }
 
     /**

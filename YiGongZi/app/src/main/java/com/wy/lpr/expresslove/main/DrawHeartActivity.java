@@ -1,6 +1,5 @@
 package com.wy.lpr.expresslove.main;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -30,7 +29,6 @@ import com.wy.lpr.expresslove.base.CommonAudioActivity;
 import com.wy.lpr.expresslove.http.UpdateAppHttpUtil;
 import com.wy.lpr.expresslove.main.photo.PhotoActivity;
 import com.wy.lpr.expresslove.utils.CommonFlashAnimationHelper;
-import com.wy.lpr.expresslove.utils.Constant;
 import com.wy.lpr.expresslove.utils.TimeUtil;
 import com.wy.lpr.expresslove.utils.TypeTextView2;
 import com.wy.lpr.expresslove.utils.heartview.HeartView;
@@ -81,15 +79,15 @@ public class DrawHeartActivity extends CommonAudioActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == 1) {
-                computeTime();
+                //computeTime();
                 hoursTv.setText(mDifferTime);
                 mWeLoveTime.setVisibility(View.VISIBLE);
                 CommonFlashAnimationHelper.showSplash(mPic, R.drawable.cat);
                 /*daysTv.setText(mDay + "");*/
                 /*minutesTv.setText(mMin + "");
                 secondsTv.setText(mSecond + "");*/
-                if (mDay == 0 && mHour == 0 && mMin == 0 && mSecond == 0) {
-                }
+                /*if (mDay == 0 && mHour == 0 && mMin == 0 && mSecond == 0) {
+                }*/
             }
         }
     };
@@ -101,13 +99,6 @@ public class DrawHeartActivity extends CommonAudioActivity {
         setContentView(R.layout.activity_draw_heart);
 
         //检查更新
-        /*new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                UpdateChecker.checkForDialog(DrawHeartActivity.this);
-            }
-        },1000);*/
-
         updateApp();
         initView();
         initHeartView();
@@ -257,11 +248,6 @@ public class DrawHeartActivity extends CommonAudioActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         mHeartView.reDraw();
-        /*if (isFastClick()) {
-            mHeartView.reDraw();
-        } else {
-            Toast.makeText(this, "心急吃不了热豆腐，请耐心等待爱心成型", Toast.LENGTH_SHORT).show();
-        }*/
         return super.onTouchEvent(event);
     }
 

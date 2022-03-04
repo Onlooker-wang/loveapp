@@ -86,7 +86,9 @@ public class MusicActivity extends CommonAudioActivity {
     // 记录当前播放歌曲的位置
     public int mCurrentPosition;
     private Context mContext;
-    private int mAppOpen;
+    private int mAppOpen;//app打开的标志位
+    private int mPauseSeekBarPosition;//上次退出时的进度条的位置
+    private int mPauseDuration;//上次退出时的歌曲总时间
 
 
     private Handler mHandler = new Handler(new Handler.Callback() {
@@ -128,7 +130,8 @@ public class MusicActivity extends CommonAudioActivity {
         super.onResume();
         if (mMediaPlayer != null) {
             if (mMediaPlayer.isPlaying()) {
-                setMediaCompletion();
+                //如果音乐在播放状态，则获取当前的总时间以及进度位置
+                setMediaCompletion();//设置监听，播放结束自动播放下一首
                 mTimeSeekBar.setMax(mMediaPlayer.getDuration());
                 mTimeSeekBar.setProgress(mMediaPlayer.getCurrentPosition());
                 mTvPlayTime.setText(parseTime(mMediaPlayer.getCurrentPosition()));
@@ -140,20 +143,17 @@ public class MusicActivity extends CommonAudioActivity {
 
                 mTvPlaySongInfo.setSelected(true);//跑马灯效果
                 mPlayStateLay.setVisibility(View.VISIBLE);
-                // 继续定时发送数据
+                // 继续定时更新进度条
                 updateProgress();
             } else {
-                if (mAppOpen == 1) {
-                    mCurrentPosition = -1;
-                    SharedPreferencesUtils.putInt(mContext, Constant.MUSIC_DATA_SP, Constant.APP_OPEN, 0);
-                }
+                //如果是未播放状态，则获取上次保存时的数据并恢复到当前界面
                 if (mCurrentPosition != -1) {
-                    int seekBarPosition = SharedPreferencesUtils.getInt(mContext, Constant.MUSIC_DATA_SP, Constant.MUSIC_SEEK_BAR_POSITION, 0);
-                    int duration = SharedPreferencesUtils.getInt(mContext, Constant.MUSIC_DATA_SP, Constant.MUSIC_DURATION, 0);
-                    mTimeSeekBar.setMax(duration);
-                    mTimeSeekBar.setProgress(seekBarPosition);
-                    mTvPlayTime.setText(parseTime(seekBarPosition));
-                    mTvTotalTime.setText(parseTime(duration));
+                    mPauseSeekBarPosition = SharedPreferencesUtils.getInt(mContext, Constant.MUSIC_DATA_SP, Constant.MUSIC_SEEK_BAR_POSITION, 0);
+                    mPauseDuration = SharedPreferencesUtils.getInt(mContext, Constant.MUSIC_DATA_SP, Constant.MUSIC_DURATION, 0);
+                    mTimeSeekBar.setMax(mPauseDuration);
+                    mTimeSeekBar.setProgress(mPauseSeekBarPosition);
+                    mTvPlayTime.setText(parseTime(mPauseSeekBarPosition));
+                    mTvTotalTime.setText(parseTime(mPauseDuration));
                     mBtnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_pause));
                     mPlayStateImg.setBackground(getResources().getDrawable(R.mipmap.list_play_state));
                     mTvPlaySongInfo.setText("歌名： " + mList.get(mCurrentPosition).song +
@@ -170,6 +170,12 @@ public class MusicActivity extends CommonAudioActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        //离开界面的时候先判断是否改变过开机标志位，如果是则说明进行过播放的操作
+        // 此时就保存进度条位置，以及当前歌曲的总时间；如果不是，则当前没有播放的音乐
+        // 所以要return，不保存。
+        if (mAppOpen == 1) {
+            return;
+        }
         if (mMediaPlayer != null) {
             if (mCurrentPosition != -1) {
                 SharedPreferencesUtils.putInt(mContext, Constant.MUSIC_DATA_SP, Constant.MUSIC_SEEK_BAR_POSITION, mMediaPlayer.getCurrentPosition());
@@ -257,7 +263,7 @@ public class MusicActivity extends CommonAudioActivity {
                 if (mCurrentPosition == -1) {
                     changeMusic(0);
                 } else {
-                    setMediaCompletion();
+                    setMediaCompletion();//设置监听，自动播放下一首
                     if (mMediaPlayer.isPlaying()) {
                         mMediaPlayer.pause();
                         mBtnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_pause));
@@ -267,7 +273,24 @@ public class MusicActivity extends CommonAudioActivity {
 //                        leftImg.setBounds(0, 0, leftImg.getMinimumWidth(), leftImg.getMinimumHeight());
 //                        tvPlaySongInfo.setCompoundDrawables(leftImg, null, null, null);
                     } else {
-                        mMediaPlayer.start();
+                        if (mAppOpen == 1) {
+                            //刚进app时没有点击任何音乐且没有点击切歌时，直接点击此播放按钮
+                            //则设置上次保存的播放源，并让MediaPlayer跳转到当前进度条的位置播放，
+                            //这样就会接着上次退出时的位置继续播放音乐
+                            try {
+                                mMediaPlayer.reset();
+                                mMediaPlayer.setDataSource(mList.get(mCurrentPosition).path);
+                                mMediaPlayer.prepare();
+                                mMediaPlayer.seekTo(mPauseSeekBarPosition);
+                                mMediaPlayer.start();
+                                mAppOpen = 0;//重置标志位
+                                SharedPreferencesUtils.putInt(mContext, Constant.MUSIC_DATA_SP, Constant.APP_OPEN, 0);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            mMediaPlayer.start();
+                        }
                         updateProgress();
                         mBtnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_play));
                         mPlayStateImg.setBackground(getResources().getDrawable(R.mipmap.list_pause_state));
@@ -299,6 +322,7 @@ public class MusicActivity extends CommonAudioActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int progress = seekBar.getProgress();
+                //音乐跳到进度条的位置播放
                 mMediaPlayer.seekTo(progress);
             }
         });
@@ -355,24 +379,26 @@ public class MusicActivity extends CommonAudioActivity {
 
     //切歌
     private void changeMusic(int position) {
-        Log.e("MainActivity", "position:" + position);
+        mAppOpen = 0;//只要有播放，则重置标志位，防止播放按钮那边的判断被干扰
+        SharedPreferencesUtils.putInt(mContext, Constant.MUSIC_DATA_SP, Constant.APP_OPEN, 0);
+        Log.i(TAG, "position:" + position);
         if (position < 0) {
             mCurrentPosition = position = mList.size() - 1;
-            Log.e("MainActivity", "mList.size:" + mList.size());
+            Log.i(TAG, "mList.size:" + mList.size());
         } else if (position > mList.size() - 1) {
             mCurrentPosition = position = 0;
         } else if (position == 0) {
             mCurrentPosition = position;
         }
         SharedPreferencesUtils.putInt(mContext, Constant.MUSIC_DATA_SP, Constant.MUSIC_CURRENT_ITEM_POSITION, mCurrentPosition);
-        Log.e("MainActivity", "position:" + position);
+        Log.i(TAG, "position:" + position);
         setMediaCompletion();//监听音乐播放完毕事件，自动下一曲
 
         try {
             // 切歌之前先重置，释放掉之前的资源
             mMediaPlayer.reset();
             // 设置播放源
-            Log.d("Music", mList.get(position).path);
+            Log.i(TAG, "setDataSource:" + mList.get(position).path);
             mMediaPlayer.setDataSource(mList.get(position).path);
             mTvPlaySongInfo.setText("歌名： " + mList.get(position).song +
                     "  歌手： " + mList.get(position).singer);

@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -14,7 +15,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 
 public class HeartView extends SurfaceView implements SurfaceHolder.Callback {
-
+    private static final String TAG = "HeartView";
     SurfaceHolder surfaceHolder;
     int offsetX;
     int offsetY;
@@ -78,7 +79,6 @@ public class HeartView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void reDraw() {
-        blooms.clear();
         if (canvas != null) {
             drawOnNewThread();
         }
@@ -92,34 +92,35 @@ public class HeartView extends SurfaceView implements SurfaceHolder.Callback {
 
     //开启一个新线程绘制
     private void drawOnNewThread() {
-        new Thread() {
-            @Override
-            public void run() {
-                if (isDrawing) return;
-                isDrawing = true;
-
-                float angle = 10;
-                while (true) {
-
-                    Bloom bloom = getBloom(angle);
-                    if (bloom != null) {
-                        blooms.add(bloom);
-                    }
-                    if (angle >= 30) {
-                        break;
-                    } else {
-                        angle += 0.2;
-                    }
-                    drawHeart();
-                    try {
-                        sleep(20);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                isDrawing = false;
+        Log.i(TAG, "drawOnNewThread: isDrawing = " + isDrawing);
+        new Thread(() -> {
+            if (isDrawing) {
+                return;
             }
-        }.start();
+            isDrawing = true;
+
+            float angle = 10;
+            while (true) {
+
+                Bloom bloom = getBloom(angle);
+                if (bloom != null) {
+                    blooms.add(bloom);
+                }
+                if (angle >= 30) {
+                    break;
+                } else {
+                    angle += 0.2;
+                }
+                drawHeart();
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            isDrawing = false;
+            blooms.clear();//爱心画完之后将blooms清空，以便下次reDraw时重新画爱心
+        }).start();
     }
 
 
