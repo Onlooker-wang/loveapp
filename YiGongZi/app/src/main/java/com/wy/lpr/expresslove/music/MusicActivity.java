@@ -1,5 +1,6 @@
 package com.wy.lpr.expresslove.music;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,7 +41,7 @@ import java.util.List;
 
 import static com.wy.lpr.expresslove.utils.DateUtil.parseTime;
 
-public class MusicActivity extends CommonAudioActivity {
+public class MusicActivity extends AppCompatActivity {
     private static final String TAG = "MusicActivity";
     private static final int INTERNAL_TIME = 1000;// 音乐进度间隔时间
     private static final int PROGRESS_MSG = 0;//更新进度条的消息
@@ -117,6 +118,8 @@ public class MusicActivity extends CommonAudioActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //透明状态栏
+        StatusBarUtil.transparencyBar(this);
         StatusBarUtil.StatusBarLightMode(this);
         setContentView(R.layout.activity_music);
         mContext = MyApplication.getContext();
@@ -130,6 +133,7 @@ public class MusicActivity extends CommonAudioActivity {
         super.onResume();
         if (mMediaPlayer != null) {
             if (mMediaPlayer.isPlaying()) {
+                Log.i(TAG, "onResume: mCurrentPosition = " + mCurrentPosition);
                 //如果音乐在播放状态，则获取当前的总时间以及进度位置
                 setMediaCompletion();//设置监听，播放结束自动播放下一首
                 mTimeSeekBar.setMax(mMediaPlayer.getDuration());

@@ -95,7 +95,7 @@ public class DrawHeartActivity extends CommonAudioActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.i(TAG, "onCreate: ");
         setContentView(R.layout.activity_draw_heart);
 
         //检查更新
@@ -111,6 +111,7 @@ public class DrawHeartActivity extends CommonAudioActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i(TAG, "onResume: ");
         initData();
     }
 
