@@ -24,7 +24,6 @@ package com.wy.lpr.expresslove.main.photo;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.net.Uri;
@@ -35,7 +34,6 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -43,8 +41,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
-import com.byd.imageviewer.ImageViewer;
-import com.byd.imageviewer.loader.GlideImageLoader;
+import com.wy.imageviewer.ImageViewer;
+import com.wy.imageviewer.loader.GlideImageLoader;
 import com.wy.lpr.expresslove.R;
 import com.wy.lpr.expresslove.base.CommonAudioActivity;
 import com.wy.lpr.expresslove.main.FireworksActivity;

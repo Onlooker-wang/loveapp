@@ -3,7 +3,7 @@ package com.wy.lpr.expresslove.http;
 
 import androidx.annotation.NonNull;
 
-import com.byd.update_app.HttpManager;
+import com.wy.update_app.HttpManager;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Progress;
 

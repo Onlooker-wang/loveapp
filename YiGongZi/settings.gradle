@@ -1,3 +1,4 @@
+include ':designTabLayout'
 include ':imageViewer'
 include ':update-app'
 include ':updatelibrary'

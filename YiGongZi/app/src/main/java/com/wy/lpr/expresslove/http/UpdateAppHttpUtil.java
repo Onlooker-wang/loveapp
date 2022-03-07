@@ -3,7 +3,7 @@ package com.wy.lpr.expresslove.http;
 
 import androidx.annotation.NonNull;
 
-import com.byd.update_app.HttpManager;
+import com.wy.update_app.HttpManager;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.FileCallBack;
 import com.zhy.http.okhttp.callback.StringCallback;

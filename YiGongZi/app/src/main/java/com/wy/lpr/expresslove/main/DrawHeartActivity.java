@@ -22,8 +22,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.byd.update_app.UpdateAppManager;
-import com.byd.update_app.listener.ExceptionHandler;
+import com.wy.update_app.UpdateAppManager;
+import com.wy.update_app.listener.ExceptionHandler;
 import com.wy.lpr.expresslove.R;
 import com.wy.lpr.expresslove.base.CommonAudioActivity;
 import com.wy.lpr.expresslove.http.UpdateAppHttpUtil;
