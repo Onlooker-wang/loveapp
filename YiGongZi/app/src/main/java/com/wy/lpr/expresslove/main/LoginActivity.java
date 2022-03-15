@@ -21,6 +21,7 @@ import com.wy.lpr.expresslove.adapter.PopListAdapter;
 import com.wy.lpr.expresslove.app.MyApplication;
 import com.wy.lpr.expresslove.base.CommonAudioActivity;
 import com.wy.lpr.expresslove.main.password.PassWordActivity;
+import com.wy.lpr.expresslove.main.tab.TabMainActivity;
 import com.wy.lpr.expresslove.utils.CommomDialog;
 import com.wy.lpr.expresslove.utils.CommonFlashAnimationHelper;
 import com.wy.lpr.expresslove.utils.Constant;
@@ -134,7 +135,7 @@ public class LoginActivity extends CommonAudioActivity {
                 SharedPreferencesUtils.putString(mContext, Constant.USER_INFO_SP,
                         Constant.CURRENT_USER_NAME, mSharedPreferences.getString(mSpLastKeyUser, ""));
                 //跳转界面
-                Intent intent = new Intent(this, DrawHeartActivity.class);
+                Intent intent = new Intent(this, TabMainActivity.class);
                 startActivity(intent);
                 finish();
 
@@ -295,7 +296,7 @@ public class LoginActivity extends CommonAudioActivity {
                     SharedPreferencesUtils.setSharedPreferences(mContext, mSpName, mSpKeyPass, pass);
                     ifRememberPass();
                     SharedPreferencesUtils.putString(mContext, Constant.USER_INFO_SP, Constant.CURRENT_USER_NAME, mCurrentUserId);
-                    Intent intent = new Intent(LoginActivity.this, DrawHeartActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, TabMainActivity.class);
                     //intent.putExtra(Constant.CURRENT_USER_NAME, mCurrentUserId);
                     startActivity(intent);
                     finish();
@@ -318,7 +319,7 @@ public class LoginActivity extends CommonAudioActivity {
                     Toast.makeText(mContext, "登录成功！", Toast.LENGTH_LONG).show();
                     ifRememberPass();
                     SharedPreferencesUtils.putString(mContext, Constant.USER_INFO_SP, Constant.CURRENT_USER_NAME, mCurrentUserId);
-                    Intent intent = new Intent(LoginActivity.this, DrawHeartActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, TabMainActivity.class);
                     //intent.putExtra(Constant.CURRENT_USER_NAME, mCurrentUserId);
                     Log.i(TAG, "onClick mCurrentUserName: " + mCurrentUserId);
                     startActivity(intent);

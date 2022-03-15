@@ -48,6 +48,7 @@ class ValueAnimatorCompat {
          * @param animator The started animation.
          */
         void onAnimationStart(ValueAnimatorCompat animator);
+
         /**
          * <p>Notifies the end of the animation. This callback is not invoked
          * for animations with repeat count set to INFINITE.</p>
@@ -55,6 +56,7 @@ class ValueAnimatorCompat {
          * @param animator The animation which reached its end.
          */
         void onAnimationEnd(ValueAnimatorCompat animator);
+
         /**
          * <p>Notifies the cancellation of the animation. This callback is not invoked
          * for animations with repeat count set to INFINITE.</p>
@@ -90,23 +92,38 @@ class ValueAnimatorCompat {
 
         interface AnimatorListenerProxy {
             void onAnimationStart();
+
             void onAnimationEnd();
+
             void onAnimationCancel();
         }
 
         abstract void start();
+
         abstract boolean isRunning();
+
         abstract void setInterpolator(Interpolator interpolator);
+
         abstract void addListener(AnimatorListenerProxy listener);
+
         abstract void addUpdateListener(AnimatorUpdateListenerProxy updateListener);
+
         abstract void setIntValues(int from, int to);
+
         abstract int getAnimatedIntValue();
+
         abstract void setFloatValues(float from, float to);
+
         abstract float getAnimatedFloatValue();
+
         abstract void setDuration(long duration);
+
         abstract void cancel();
+
         abstract float getAnimatedFraction();
+
         abstract void end();
+
         abstract long getDuration();
     }
 

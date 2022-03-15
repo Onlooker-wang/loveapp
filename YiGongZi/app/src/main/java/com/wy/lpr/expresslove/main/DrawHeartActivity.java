@@ -73,25 +73,6 @@ public class DrawHeartActivity extends CommonAudioActivity {
     private final static int MIN_CLICK_DELAY_TIME = 2800;
     private String mCurrentUserName;
 
-    private Handler timeHandler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == 1) {
-                //computeTime();
-                hoursTv.setText(mDifferTime);
-                mWeLoveTime.setVisibility(View.VISIBLE);
-                CommonFlashAnimationHelper.showSplash(mPic, R.drawable.cat);
-                /*daysTv.setText(mDay + "");*/
-                /*minutesTv.setText(mMin + "");
-                secondsTv.setText(mSecond + "");*/
-                /*if (mDay == 0 && mHour == 0 && mMin == 0 && mSecond == 0) {
-                }*/
-            }
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,8 +84,15 @@ public class DrawHeartActivity extends CommonAudioActivity {
         initView();
         initHeartView();
         initTime();
-        startRun();//倒计时
         setListener();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hoursTv.setText(mDifferTime);
+                mWeLoveTime.setVisibility(View.VISIBLE);
+                CommonFlashAnimationHelper.showSplash(mPic, R.drawable.cat);
+            }
+        }, 1000);
 
     }
 
@@ -223,28 +211,6 @@ public class DrawHeartActivity extends CommonAudioActivity {
                 });
     }
 
-    /**
-     * 开启计时
-     */
-    private void startRun() {
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                while (isRun) {
-                    try {
-                        Thread.sleep(1000); // sleep 1000ms
-                        Message message = Message.obtain();
-                        message.what = 1;
-                        timeHandler.sendMessage(message);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

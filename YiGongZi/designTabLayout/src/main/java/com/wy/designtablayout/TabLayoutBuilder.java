@@ -34,7 +34,7 @@ public class TabLayoutBuilder extends XTabLayout {
                 if (view != null) {
                     view.setTextColor(mItemStatus.get(position).getSelectedTitleColor());
                 }
-                if (status.getSelectedResId()!=0 && img!=null) {
+                if (status.getSelectedResId() != 0 && img != null) {
                     img.setImageResource(status.getSelectedResId());
                 }
             }
@@ -48,13 +48,14 @@ public class TabLayoutBuilder extends XTabLayout {
                 if (view != null) {
                     view.setTextColor(status.getNormalTitleColor());
                 }
-                if (status.getNormalResId()!=0 && img!=null) {
+                if (status.getNormalResId() != 0 && img != null) {
                     img.setImageResource(status.getNormalResId());
                 }
             }
 
             @Override
-            public void onTabReselected(Tab tab) {}
+            public void onTabReselected(Tab tab) {
+            }
         };
     }
 
@@ -75,9 +76,10 @@ public class TabLayoutBuilder extends XTabLayout {
      * <p>Add Item where you want to show</p>
      * <p>If you want to set the title textSize,please call {@link #setTextSize(float)}</p>
      * <p>Else if you want to set the bottomMargin,please call {@link #setBottomMargin(int)}</p>
+     *
      * @param status Inner class {@link ItemStatus}
      */
-    public void addTab(ItemStatus status){
+    public void addTab(ItemStatus status) {
         View inflate = getTabView(status);
         mItemStatus.add(status);
         mItemViews.add(inflate);
@@ -86,26 +88,29 @@ public class TabLayoutBuilder extends XTabLayout {
     /**
      * <p>Set the view of bottom margin</p>
      * <p>Must before {@link #addTab(ItemStatus)}</p>
+     *
      * @param dp bottomMargin
      */
-    public void setBottomMargin(int dp){
+    public void setBottomMargin(int dp) {
         mBottomMargin = dp;
     }
 
     /**
      * <p>Set the bottom title size</p>
      * <p>Must before {@link #addTab(ItemStatus)}</p>
+     *
      * @param sp int sp
      */
-    public void setTextSize(float sp){
+    public void setTextSize(float sp) {
         mTextSize = sp;
     }
 
     /**
      * <p>Must call {@link #addTab(ItemStatus)} before</p>
+     *
      * @throws RuntimeException
      */
-    public void build(){
+    public void build() {
         if (mItemViews.isEmpty()) {
             throw new RuntimeException("Must call addTab(ItemStatus status) before!");
         }
@@ -113,7 +118,7 @@ public class TabLayoutBuilder extends XTabLayout {
             XTabLayout.Tab tab = this.getTabAt(i);
             if (tab != null) {
                 tab.setCustomView(mItemViews.get(i));
-                if(i==1){
+                if (i == 0) {
                     tab.select();
                     TextView view = getTextView(i);
                     if (view != null) {
@@ -127,16 +132,17 @@ public class TabLayoutBuilder extends XTabLayout {
 
     /**
      * Get CustomView child TextView
+     *
      * @param position index
      * @return TextView
      */
-    private TextView getTextView(int position){
+    private TextView getTextView(int position) {
         if (mItemViews != null) {
             ViewGroup parent = (ViewGroup) mItemViews.get(position);
             int childCount = parent.getChildCount();
             for (int i = 0; i < childCount; i++) {
                 if (parent.getChildAt(i) instanceof TextView) {
-                    return (TextView)parent.getChildAt(i);
+                    return (TextView) parent.getChildAt(i);
                 }
             }
         }
@@ -145,16 +151,17 @@ public class TabLayoutBuilder extends XTabLayout {
 
     /**
      * Get CustomView child ImageView
+     *
      * @param position index
      * @return ImageView
      */
-    private ImageView getImageView(int position){
+    private ImageView getImageView(int position) {
         if (mItemViews != null) {
             ViewGroup parent = (ViewGroup) mItemViews.get(position);
             int childCount = parent.getChildCount();
             for (int i = 0; i < childCount; i++) {
                 if (parent.getChildAt(i) instanceof ImageView) {
-                    return (ImageView)parent.getChildAt(i);
+                    return (ImageView) parent.getChildAt(i);
                 }
             }
         }
@@ -162,7 +169,7 @@ public class TabLayoutBuilder extends XTabLayout {
     }
 
 
-    public static final class ItemStatus{
+    public static final class ItemStatus {
 
         private CharSequence title;
         private int drawableSelectorId;
@@ -214,6 +221,7 @@ public class TabLayoutBuilder extends XTabLayout {
 
     /**
      * Inflate the Item View
+     *
      * @param status ItemStatus
      * @return View
      */
@@ -228,15 +236,15 @@ public class TabLayoutBuilder extends XTabLayout {
         ImageView img = (ImageView) inflate.findViewById(R.id.layout_tab_img);
         TextView text = (TextView) inflate.findViewById(R.id.layout_tab_text);
 
-        if (status.getNormalResId()==0) {
+        if (status.getNormalResId() == 0) {
             img.setImageResource(status.getDrawableSelectorId());
-        }else {
+        } else {
             img.setImageResource(status.getNormalResId());
         }
 
         text.setText(status.getTitle());
         //COMPLEX_UNIT_SP=2
-        text.setTextSize(2,mTextSize);
+        text.setTextSize(2, mTextSize);
         text.setTextColor(status.getNormalTitleColor());
 
         params = new LinearLayout.LayoutParams(inflate.getLayoutParams());

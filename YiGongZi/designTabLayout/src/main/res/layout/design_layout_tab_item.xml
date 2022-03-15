@@ -6,7 +6,6 @@
     android:orientation="vertical">
 
     <ImageView
-        android:contentDescription="@string/app_name"
         android:id="@+id/layout_tab_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
