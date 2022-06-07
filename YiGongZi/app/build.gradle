@@ -51,7 +51,7 @@ dependencies {
     //Logger打印
     implementation 'com.orhanobut:logger:1.15'
     //RecyclerView最好的适配器，让你的适配器一目了然，告别代码冗余
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.14'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     //仿iOS的AlertViewController
     implementation 'com.bigkoo:alertview:1.0.3'
     //图片选择

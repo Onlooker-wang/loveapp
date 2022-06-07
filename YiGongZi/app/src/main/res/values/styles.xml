@@ -40,8 +40,15 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
-    <style name="PopUpAnimation" parent="android:Animation" mce_bogus="1">
+    <style name="PopUpAnimation" mce_bogus="1" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/popup_enter</item>
         <item name="android:windowExitAnimation">@anim/popup_exit</item>
     </style>
+
+    <!--AvatarDialog 这个自定义控件使用的样式-->
+    <style name="avatar_dialog_animation">
+        <item name="android:windowEnterAnimation">@anim/avatar_dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/avatar_dialog_out</item>
+    </style>
+
 </resources>

@@ -17,6 +17,7 @@ public class Constant {
     public static final String LAST_PASS_WORD = "LastPassWord";
     public static final String PASSWORD_POSITION = "PasswordPosition";
     public static final String PASSWORD_FOR_CHECK_PASS = "PasswordForCheckPass";
+    public static final String CURRENT_USER_ID = "CurrentUserId";
 
     public static final String MUSIC_DATA_SP = "MusicDataSp";
     public static final String MUSIC_DATA_FIRST = "MusicDataFirst";

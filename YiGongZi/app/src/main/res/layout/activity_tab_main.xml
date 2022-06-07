@@ -24,7 +24,7 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_50"
-        android:background="@color/update_nickname_gray"
+        android:background="@color/white"
         app:tabBackground="@null"
         app:tabIndicatorHeight="0dp" />
 </LinearLayout>

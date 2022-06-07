@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import com.wy.lpr.expresslove.R;
 import com.wy.lpr.expresslove.app.MyApplication;
 import com.wy.lpr.expresslove.main.FireworksActivity;
+import com.wy.lpr.expresslove.main.LoginActivity;
 import com.wy.lpr.expresslove.music.MusicActivity;
 import com.wy.lpr.expresslove.utils.CircleImageDrawable;
 import com.wy.lpr.expresslove.utils.Constant;
@@ -88,14 +89,14 @@ public class SettingFragment extends PagerFragment {
         mLoginOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "onClick: ");
+                startActivity(new Intent(getActivity(), LoginActivity.class));
             }
         });
 
         mNextLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(getActivity(), UserInfoActivity.class));
             }
         });
     }
