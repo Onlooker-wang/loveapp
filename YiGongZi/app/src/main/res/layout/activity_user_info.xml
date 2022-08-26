@@ -55,7 +55,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_20" />
 
-            <com.wy.lpr.expresslove.main.tab.AvatarImageView
+            <com.wy.qk.expresslove.main.tab.AvatarImageView
                 android:id="@+id/head_img"
                 android:layout_width="@dimen/dp_50"
                 android:layout_height="@dimen/dp_50"

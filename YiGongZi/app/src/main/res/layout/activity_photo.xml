@@ -62,7 +62,7 @@
         android:layout_marginTop="55dp"
         android:paddingStart="20dp" />
 
-    <com.wy.lpr.expresslove.utils.heart.HeartLayout
+    <com.wy.qk.expresslove.utils.heart.HeartLayout
         android:id="@+id/heart_o_red_layout"
         android:layout_width="100dp"
         android:layout_height="250dp"

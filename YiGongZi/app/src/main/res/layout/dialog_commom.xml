@@ -40,7 +40,7 @@
         android:textSize="20sp"
         android:visibility="gone" />
 
-    <com.wy.lpr.expresslove.utils.TypeTextView2
+    <com.wy.qk.expresslove.utils.TypeTextView2
         android:id="@+id/dialog_sentence"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

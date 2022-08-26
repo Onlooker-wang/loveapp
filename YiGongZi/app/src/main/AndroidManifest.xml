@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wy.lpr.expresslove">
+    package="com.wy.qk.expresslove">
 
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -13,17 +13,17 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:name=".app.MyApplication"
+        android:name="com.wy.qk.expresslove.app.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/blue_ocean"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".main.tab.RenameActivity"></activity>
+        <activity android:name="com.wy.qk.expresslove.main.tab.RenameActivity"></activity>
         <activity
-            android:name=".main.tab.TabMainActivity"
+            android:name="com.wy.qk.expresslove.main.tab.TabMainActivity"
             android:launchMode="singleTask"></activity>
-        <activity android:name=".music.MusicActivity" />
+        <activity android:name="com.wy.qk.expresslove.music.MusicActivity" />
 
         <meta-data
             android:name="android.max_aspect"
@@ -32,7 +32,7 @@
             android:name="UPDATE_APP_KEY"
             android:value="ab55ce55Ac4bcP408cPb8c1Aaeac179c5f6f" />
 
-        <activity android:name=".main.SplashActivity">
+        <activity android:name="com.wy.qk.expresslove.main.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,21 +40,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".main.DrawHeartActivity"
+            android:name="com.wy.qk.expresslove.main.DrawHeartActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".main.MainActivity" />
-        <activity android:name=".main.WelcomeGuideActivity" />
-        <activity android:name=".main.FireworksActivity" />
-        <activity android:name=".sample.TextSampleActivity" />
-        <activity android:name=".main.PictureAnimActivity" />
-        <activity android:name=".main.password.PassWordActivity" />
-        <activity android:name=".main.photo.PhotoActivity" />
+        <activity android:name="com.wy.qk.expresslove.main.MainActivity" />
+        <activity android:name="com.wy.qk.expresslove.main.WelcomeGuideActivity" />
+        <activity android:name="com.wy.qk.expresslove.main.FireworksActivity" />
+        <activity android:name="com.wy.qk.expresslove.sample.TextSampleActivity" />
+        <activity android:name="com.wy.qk.expresslove.main.PictureAnimActivity" />
+        <activity android:name="com.wy.qk.expresslove.main.password.PassWordActivity" />
+        <activity android:name="com.wy.qk.expresslove.main.photo.PhotoActivity" />
         <activity
-            android:name=".zoom.DragPhotoActivity"
+            android:name="com.wy.qk.expresslove.zoom.DragPhotoActivity"
             android:theme="@style/translucent" />
-        <activity android:name=".main.LoginActivity" />
-        <activity android:name=".main.tab.AboutActivity" />
-        <activity android:name=".main.tab.UserInfoActivity" />
+        <activity android:name="com.wy.qk.expresslove.main.LoginActivity" />
+        <activity android:name="com.wy.qk.expresslove.main.tab.AboutActivity" />
+        <activity android:name="com.wy.qk.expresslove.main.tab.UserInfoActivity" />
     </application>
 
 </manifest>

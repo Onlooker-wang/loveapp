@@ -2176,7 +2176,7 @@ public class XTabLayout extends HorizontalScrollView {
 
         @Override
         public void onTabSelected(XTabLayout.Tab tab) {
-            mViewPager.setCurrentItem(tab.getPosition());
+            mViewPager.setCurrentItem(tab.getPosition(),false);//false禁用viewpager的滑动动画
         }
 
         @Override

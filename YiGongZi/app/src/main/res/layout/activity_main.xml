@@ -24,13 +24,13 @@
             android:src="@drawable/miao2" />
     </LinearLayout>
 
-    <com.wy.lpr.expresslove.utils.whitesnow.SnowView
+    <com.wy.qk.expresslove.utils.whitesnow.SnowView
         android:id="@+id/whiteSnowView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-    <com.wy.lpr.expresslove.utils.bluesnow.FlowerView
+    <com.wy.qk.expresslove.utils.bluesnow.FlowerView
         android:id="@+id/flowerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -42,7 +42,7 @@
         android:layout_marginTop="150dp"
         android:layout_marginEnd="55dp">
 
-        <com.wy.lpr.expresslove.utils.TypeTextView2
+        <com.wy.qk.expresslove.utils.TypeTextView2
             android:id="@+id/love_sentence"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
