@@ -89,4 +89,6 @@ dependencies {
     implementation files('libs/tbs_sdk_thirdapp_v4.3.0.1020_43633_sharewithdownload_withoutGame_obfs_20190111_105200.jar')
     //二维码&条形码
     implementation 'com.google.zxing:core:3.3.1'
+    //json动画
+    implementation 'com.airbnb.android:lottie:3.2.2'
 }

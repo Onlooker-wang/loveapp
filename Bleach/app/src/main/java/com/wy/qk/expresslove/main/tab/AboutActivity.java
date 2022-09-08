@@ -26,6 +26,6 @@ public class AboutActivity extends CommonAudioActivity {
     private void initView() {
         mAboutVersion = (TextView) findViewById(R.id.about_version);
         String versionName = AppUpdateUtils.getVersionName(this);
-        mAboutVersion.setText("意公子 v:" + versionName);
+        mAboutVersion.setText(getString(R.string.app_name) + " v:" + versionName);
     }
 }

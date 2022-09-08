@@ -147,5 +147,12 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_1"
             android:background="@color/gray" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            app:lottie_fileName="zk.json"
+            app:lottie_loop="true"/>
     </LinearLayout>
 </LinearLayout>

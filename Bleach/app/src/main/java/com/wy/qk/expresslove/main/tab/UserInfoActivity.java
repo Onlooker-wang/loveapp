@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.wy.imageviewer.ImageViewer;
 import com.wy.imageviewer.loader.GlideImageLoader;
 import com.wy.qk.expresslove.R;
@@ -34,6 +35,8 @@ public class UserInfoActivity extends CommonAudioActivity {
     private String mCurrentUserName;
     private TextView mUserName, mIdText;
     private Uri mHeadImageUri;
+    private String mUriStr;
+    private LottieAnimationView mLottieAnimationView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,9 +44,9 @@ public class UserInfoActivity extends CommonAudioActivity {
         StatusBarUtil.StatusBarLightMode(this);
         setContentView(R.layout.activity_user_info);
         mContext = MyApplication.getContext();
-        String uriStr = SharedPreferencesUtils.getString(mContext, Constant.HEAD_IMAGE_URI_SP, Constant.HEAD_IMAGE_URI, "");
-        Log.i(TAG, "onCreate: uriStr = " + uriStr);
-        mHeadImageUri = Uri.parse(uriStr);
+        mUriStr = SharedPreferencesUtils.getString(mContext, Constant.HEAD_IMAGE_URI_SP, Constant.HEAD_IMAGE_URI, "");
+        mHeadImageUri = Uri.parse(mUriStr);
+        Log.i(TAG, "onCreate: mUriStr = " + mUriStr + ",mHeadImageUri = " + mHeadImageUri);
         initView();
         setListener();
     }
@@ -56,14 +59,22 @@ public class UserInfoActivity extends CommonAudioActivity {
         mUserName = (TextView) findViewById(R.id.user_name);
         mUserName.setText(mCurrentUserName);
         mIdText = (TextView) findViewById(R.id.id_tv);
+        //设置json动画
+        mLottieAnimationView = (LottieAnimationView) findViewById(R.id.lottie);
+        mLottieAnimationView.setImageAssetsFolder("images/");
+        mLottieAnimationView.setAnimation("zk.json");
+        mLottieAnimationView.playAnimation();
 
-        Bitmap bitmap = null;
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mHeadImageUri);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (mUriStr != null && !mUriStr.equals("")) {
+            Log.i(TAG, "initView: mUriStr = " + mUriStr);
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mHeadImageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mAvatarImageView.setImageBitmap(bitmap);
         }
-        mAvatarImageView.setImageBitmap(bitmap);
 
     }
 
