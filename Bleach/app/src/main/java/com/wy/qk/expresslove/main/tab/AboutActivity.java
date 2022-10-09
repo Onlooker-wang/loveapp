@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.wy.qk.expresslove.R;
 import com.wy.qk.expresslove.base.CommonAudioActivity;
-import com.wy.qk.expresslove.utils.StatusBarUtil;
+import com.wy.qk.expresslove.utils.StatusBarUtils;
 import com.wy.update_app.utils.AppUpdateUtils;
 
 public class AboutActivity extends CommonAudioActivity {
@@ -17,7 +17,7 @@ public class AboutActivity extends CommonAudioActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusBarUtil.StatusBarLightMode(this);
+        StatusBarUtils.StatusBarLightMode(this);
         setContentView(R.layout.activity_about);
 
         initView();

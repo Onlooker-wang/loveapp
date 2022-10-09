@@ -11,7 +11,7 @@ import com.wy.qk.expresslove.app.MyApplication;
 import com.wy.qk.expresslove.base.CommonAudioActivity;
 import com.wy.qk.expresslove.utils.Constant;
 import com.wy.qk.expresslove.utils.SharedPreferencesUtils;
-import com.wy.qk.expresslove.utils.StatusBarUtil;
+import com.wy.qk.expresslove.utils.StatusBarUtils;
 
 public class RenameActivity extends CommonAudioActivity {
 
@@ -23,7 +23,7 @@ public class RenameActivity extends CommonAudioActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusBarUtil.StatusBarLightMode(this);
+        StatusBarUtils.StatusBarLightMode(this);
         setContentView(R.layout.activity_rename);
         mContext = MyApplication.getContext();
 

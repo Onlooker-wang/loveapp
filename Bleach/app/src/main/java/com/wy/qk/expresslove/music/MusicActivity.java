@@ -31,7 +31,7 @@ import com.wy.qk.expresslove.utils.ImageUtils;
 import com.wy.qk.expresslove.utils.MusicUtils;
 import com.wy.qk.expresslove.utils.ObjectUtils;
 import com.wy.qk.expresslove.utils.SharedPreferencesUtils;
-import com.wy.qk.expresslove.utils.StatusBarUtil;
+import com.wy.qk.expresslove.utils.StatusBarUtils;
 import com.wy.qk.expresslove.utils.ToastUtils;
 
 import java.io.IOException;
@@ -118,8 +118,8 @@ public class MusicActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //透明状态栏
-        StatusBarUtil.transparencyBar(this);
-        StatusBarUtil.StatusBarLightMode(this);
+        StatusBarUtils.transparencyBar(this);
+        StatusBarUtils.StatusBarLightMode(this);
         setContentView(R.layout.activity_music);
         mContext = MyApplication.getContext();
         initView();

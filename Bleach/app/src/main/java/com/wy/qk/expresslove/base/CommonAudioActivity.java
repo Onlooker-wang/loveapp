@@ -20,7 +20,7 @@ import com.wy.qk.expresslove.utils.ObjectUtils;
 import com.wy.qk.expresslove.utils.PlayAudioUtil;
 import com.wy.qk.expresslove.utils.RandomUtil;
 import com.wy.qk.expresslove.utils.SharedPreferencesUtils;
-import com.wy.qk.expresslove.utils.StatusBarUtil;
+import com.wy.qk.expresslove.utils.StatusBarUtils;
 import com.wy.qk.expresslove.utils.ToastUtils;
 
 import java.io.IOException;
@@ -61,7 +61,7 @@ public class CommonAudioActivity extends AppCompatActivity {
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }*/
         //透明状态栏
-        StatusBarUtil.transparencyBar(this);
+        StatusBarUtils.transparencyBar(this);
         mRxPermissions = new RxPermissions(this);
         mMediaPlayer = SingleMediaPlayer.getINSTANCE();
         mAppOpen = SharedPreferencesUtils.getInt(mContext, Constant.MUSIC_DATA_SP, Constant.APP_OPEN, 1);

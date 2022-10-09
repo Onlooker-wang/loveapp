@@ -25,7 +25,7 @@ import com.wy.qk.expresslove.utils.CommomDialog;
 import com.wy.qk.expresslove.utils.CommonFlashAnimationHelper;
 import com.wy.qk.expresslove.utils.Constant;
 import com.wy.qk.expresslove.utils.SharedPreferencesUtils;
-import com.wy.qk.expresslove.utils.StatusBarUtil;
+import com.wy.qk.expresslove.utils.StatusBarUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +73,7 @@ public class LoginActivity extends CommonAudioActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusBarUtil.StatusBarLightMode(this);
+        StatusBarUtils.StatusBarLightMode(this);
 
         setContentView(R.layout.activity_login);
         mContext = MyApplication.getContext();

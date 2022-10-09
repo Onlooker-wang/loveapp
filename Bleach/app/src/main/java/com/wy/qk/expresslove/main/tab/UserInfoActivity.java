@@ -23,7 +23,7 @@ import com.wy.qk.expresslove.app.MyApplication;
 import com.wy.qk.expresslove.base.CommonAudioActivity;
 import com.wy.qk.expresslove.utils.Constant;
 import com.wy.qk.expresslove.utils.SharedPreferencesUtils;
-import com.wy.qk.expresslove.utils.StatusBarUtil;
+import com.wy.qk.expresslove.utils.StatusBarUtils;
 
 import java.io.IOException;
 
@@ -41,7 +41,7 @@ public class UserInfoActivity extends CommonAudioActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusBarUtil.StatusBarLightMode(this);
+        StatusBarUtils.StatusBarLightMode(this);
         setContentView(R.layout.activity_user_info);
         mContext = MyApplication.getContext();
         mUriStr = SharedPreferencesUtils.getString(mContext, Constant.HEAD_IMAGE_URI_SP, Constant.HEAD_IMAGE_URI, "");

@@ -14,7 +14,7 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class StatusBarUtil {
+public class StatusBarUtils {
     /**
      * 修改状态栏为全透明
      *
